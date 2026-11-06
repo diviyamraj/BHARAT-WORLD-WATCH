@@ -343,7 +343,6 @@
   </div>
   <div class="r">
     <a href="#/watch">Watch</a>
-    <a href="#/studio">Newsroom</a>
     <a href="#/join" id="topJoin">Join</a>
   </div>
 </div></div>
@@ -387,7 +386,6 @@
     </div>
     <div><h4>Sections</h4><div id="footSec"></div></div>
     <div><h4>Newsroom</h4>
-      <a href="#/studio">Studio login</a>
       <a href="#/join">Become a member</a>
       <a href="#/watch">Watch</a>
     </div>
@@ -431,7 +429,7 @@ function sec(k) {
 var SITE_KEY = "bww_site_v1";
 var MEM_KEY = "bww_members_v1";
 var SESS_KEY = "bww_session_v1";
-var DEFAULT_PASS = "BWW-2026";
+var DEFAULT_HASH = "dfc3f436e6f06909";  /* owner passcode is never stored in plain text */
 
 var db = { articles: [], comments: [], settings: {} };
 var members = { users: [] };
@@ -446,6 +444,16 @@ function esc(s) {
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 function hashStr(s) { var h = 0, i; for (i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360; return h; }
+function hashPass(str) {
+  var h1 = 0x811c9dc5, h2 = 0x1000193, i, c;
+  var salt = "bww::" + str + "::desk";
+  for (i = 0; i < salt.length; i++) {
+    c = salt.charCodeAt(i);
+    h1 = (h1 ^ c) >>> 0; h1 = Math.imul(h1, 16777619) >>> 0;
+    h2 = (h2 + c * (i + 7)) >>> 0; h2 = Math.imul(h2, 2654435761) >>> 0;
+  }
+  return ("00000000" + h1.toString(16)).slice(-8) + ("00000000" + h2.toString(16)).slice(-8);
+}
 function artStyle(a) {
   var h = hashStr(a.title || a.id);
   return "background:linear-gradient(150deg,hsl(" + h + ",40%,30%),hsl(" + ((h + 44) % 360) + ",48%,13%))";
@@ -583,7 +591,7 @@ function loadAll() {
       comments: [],
       settings: {
         breaking: "Bharat World Watch launches its global edition · Markets steady as central banks hold · Arctic shipping season opens early · Tech giants sign long-term power deals",
-        passcode: DEFAULT_PASS,
+        passHash: DEFAULT_HASH,
         tagline: "Global news · Indian lens"
       }
     };
@@ -592,7 +600,12 @@ function loadAll() {
     db = site;
     if (!db.comments) db.comments = [];
     if (!db.settings) db.settings = {};
-    if (!db.settings.passcode) db.settings.passcode = DEFAULT_PASS;
+    if (db.settings.passcode) {
+      db.settings.passHash = hashPass(db.settings.passcode);
+      delete db.settings.passcode;
+      saveSite();
+    }
+    if (!db.settings.passHash) db.settings.passHash = DEFAULT_HASH;
   }
   members = readKey(MEM_KEY, { users: [] });
   if (!members || !members.users) members = { users: [] };
@@ -618,7 +631,8 @@ var modal = document.getElementById("modal");
 function buildChrome() {
   var nav = document.getElementById("nav"), h = '<a href="#/">Home</a>';
   SECTIONS.forEach(function (s) { h += '<a href="#/section/' + s.key + '">' + s.name + "</a>"; });
-  h += '<a href="#/watch">Watch</a><span class="sp"></span><a class="studio" href="#/studio">Studio</a>';
+  h += '<a href="#/watch">Watch</a><span class="sp"></span>';
+  if (studioUnlocked) h += '<a class="studio" href="#/studio">Studio</a>';
   nav.innerHTML = h;
 
   document.getElementById("footSec").innerHTML = SECTIONS.map(function (s) {
@@ -627,6 +641,15 @@ function buildChrome() {
 
   document.getElementById("year").textContent = new Date().getFullYear();
   tickTicker(); clock(); setInterval(clock, 30000); paintAuth();
+}
+
+function refreshNav() {
+  var nav = document.getElementById("nav"), h = '<a href="#/">Home</a>';
+  SECTIONS.forEach(function (s) { h += '<a href="#/section/' + s.key + '">' + s.name + "</a>"; });
+  h += '<a href="#/watch">Watch</a><span class="sp"></span>';
+  if (studioUnlocked) h += '<a class="studio" href="#/studio">Studio</a>';
+  nav.innerHTML = h;
+  markNav(null);
 }
 
 function paintAuth() {
@@ -1069,16 +1092,15 @@ var editingId = null;
 
 function renderStudio() {
   if (!studioUnlocked) {
-    app.innerHTML = '<div class="lockbox"><h2>Studio access</h2>' +
-      "<p>This is the newsroom desk. Enter the passcode to write and publish.</p>" +
-      '<div class="field"><input id="pc" type="password" placeholder="Passcode" style="text-align:center"></div>' +
+    app.innerHTML = '<div class="lockbox"><h2>Owner access</h2>' +
+      "<p>Enter the newsroom passcode to continue.</p>" +
+      '<div class="field"><input id="pc" type="password" placeholder="Passcode" autocomplete="off" style="text-align:center"></div>' +
       '<button class="btn primary" id="pcGo" style="width:100%">Unlock</button>' +
-      '<p class="fine" style="margin-top:14px">Default passcode: <b>' + esc(db.settings.passcode) + "</b><br>" +
-      "Change it in Settings once you are inside.</p></div>";
+      '<p class="fine" style="margin-top:14px">Authorised staff only.</p></div>';
     markNav(null);
     var go = function () {
       var v = document.getElementById("pc").value;
-      if (v === db.settings.passcode) { studioUnlocked = true; renderStudio(); }
+      if (hashPass(v) === db.settings.passHash) { studioUnlocked = true; refreshNav(); renderStudio(); }
       else toast("Wrong passcode");
     };
     document.getElementById("pcGo").addEventListener("click", go);
@@ -1139,8 +1161,8 @@ function renderStudio() {
     h += '<div class="box"><h3>Site settings</h3>' +
       '<div class="field"><label for="sBreak">Breaking ticker (separate with ·)</label>' +
       '<textarea id="sBreak" style="min-height:90px">' + esc(db.settings.breaking || "") + "</textarea></div>" +
-      '<div class="field"><label for="sPass">Studio passcode</label>' +
-      '<input type="text" id="sPass" value="' + esc(db.settings.passcode) + '"></div>' +
+      '<div class="field"><label for="sPass">New studio passcode (leave blank to keep current)</label>' +
+      '<input type="password" id="sPass" value="" autocomplete="new-password" placeholder="••••••••"></div>' +
       '<button class="btn primary" id="sSave">Save settings</button>' +
       '<hr style="border:0;border-top:1px solid #e3e0d9;margin:20px 0">' +
       '<h3 style="font-size:14px">Danger zone</h3>' +
@@ -1192,8 +1214,15 @@ function renderStudio() {
     document.getElementById("sSave").addEventListener("click", function () {
       db.settings.breaking = document.getElementById("sBreak").value;
       var p = document.getElementById("sPass").value.trim();
-      if (p) db.settings.passcode = p;
-      saveSite(); tickTicker(); toast("Settings saved");
+      if (p) {
+        if (p.length < 6) { toast("Passcode needs at least 6 characters"); return; }
+        db.settings.passHash = hashPass(p);
+        document.getElementById("sPass").value = "";
+        toast("Settings saved — passcode updated");
+      } else {
+        toast("Settings saved");
+      }
+      saveSite(); tickTicker();
     });
     document.getElementById("resetBtn").addEventListener("click", function () {
       if (!confirm("Reset all stories to the sample set?")) return;
