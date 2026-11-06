@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bharat World Watch — Global news, Indian lens</title>
+<meta name="description" content="Bharat World Watch: independent global reporting from an Indian vantage point. World, India, Politics, Business, Tech, Sports, Culture and Opinion.">
+<style>
+  :root{
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --ink:#0f1115;
+    --ink2:#414852;
+    --ink3:#767f8b;
+    --line:#e3e0d9;
+    --line2:#efece6;
+    --brand:#c8102e;
+    --brand2:#a10c24;
+    --navy:#0b1f3a;
+    --gold:#c9a227;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman","Noto Serif",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --shadow:0 1px 2px rgba(15,17,21,.05),0 14px 34px -18px rgba(15,17,21,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  button{font-family:inherit;cursor:pointer}
+  input,select,textarea{font-family:inherit;font-size:15px;color:var(--ink)}
+  .wrap{width:min(1280px,100% - 44px);margin-inline:auto}
+  @media(max-width:640px){.wrap{width:calc(100% - 28px)}}
+
+  /* ---------- top strip ---------- */
+  .top{background:var(--navy);color:#b9c4d3;font-size:11.5px;letter-spacing:.06em}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:7px 0}
+  .top .l{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .live{display:inline-flex;align-items:center;gap:6px;color:#fff;font-weight:700;letter-spacing:.1em}
+  .live i{width:7px;height:7px;border-radius:50%;background:#ff3b30;display:inline-block;
+    animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,59,48,.6)}70%{box-shadow:0 0 0 7px rgba(255,59,48,0)}100%{box-shadow:0 0 0 0 rgba(255,59,48,0)}}
+  .top a:hover{color:#fff}
+  .top .r{display:flex;gap:14px;align-items:center}
+
+  /* ---------- masthead ---------- */
+  .mast{background:var(--card);border-bottom:1px solid var(--line)}
+  .mast .wrap{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:18px 0 16px}
+  .brand{display:flex;align-items:center;gap:14px;min-width:0}
+  .globe{width:52px;height:52px;flex:none}
+  .wordmark{font-family:var(--serif);font-size:clamp(22px,3vw,31px);font-weight:700;letter-spacing:-.01em;
+    line-height:1.05;white-space:nowrap}
+  .wordmark span{color:var(--brand)}
+  .tagline{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink3);margin-top:5px}
+  .mast-r{display:flex;align-items:center;gap:10px;flex:none}
+  .icon-btn{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:8px 15px;
+    font-size:12.5px;font-weight:600;color:var(--ink2);transition:.15s;white-space:nowrap}
+  .icon-btn:hover{border-color:var(--ink3);color:var(--ink)}
+  .icon-btn.solid{background:var(--brand);border-color:var(--brand);color:#fff}
+  .icon-btn.solid:hover{background:var(--brand2)}
+  .who{display:flex;align-items:center;gap:9px}
+  .av{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;
+    place-items:center;font-weight:700;font-size:13px;flex:none}
+
+  /* ---------- nav ---------- */
+  .stick{position:sticky;top:0;z-index:50}
+  .nav{background:var(--card);border-bottom:2px solid var(--ink)}
+  .nav .wrap{display:flex;align-items:stretch;gap:0;overflow-x:auto;scrollbar-width:none}
+  .nav .wrap::-webkit-scrollbar{display:none}
+  .nav a{padding:11px 15px;font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+    white-space:nowrap;border-bottom:3px solid transparent;transition:.15s;color:var(--ink2)}
+  .nav a:hover{color:var(--brand)}
+  .nav a.on{color:var(--brand);border-bottom-color:var(--brand)}
+  .nav .sp{flex:1}
+  .nav .studio{color:var(--brand);border-left:1px solid var(--line)}
+  .ticker{background:var(--brand);color:#fff;overflow:hidden}
+  .ticker .wrap{display:flex;align-items:center;gap:0}
+  .ticker .tag{background:#7d0a1c;font-size:10.5px;font-weight:800;letter-spacing:.16em;padding:8px 13px;
+    white-space:nowrap;flex:none}
+  .ticker .track{overflow:hidden;flex:1;height:33px;position:relative}
+  .ticker .move{position:absolute;white-space:nowrap;display:flex;gap:44px;align-items:center;height:33px;
+    font-size:12.5px;font-weight:600;animation:slide 52s linear infinite}
+  .ticker .move:hover{animation-play-state:paused}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- layout ---------- */
+  main{padding:24px 0 60px}
+  .kicker{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+  .row{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:36px;align-items:start}
+  @media(max-width:980px){.row{grid-template-columns:minmax(0,1fr)}}
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;grid-template-columns:1.55fr 1fr;gap:0;border-top:3px solid var(--ink);
+    border-bottom:1px solid var(--line);margin-bottom:26px}
+  .hero .lead{position:relative;border-right:1px solid var(--line)}
+  .hero .side{display:flex;flex-direction:column}
+  @media(max-width:820px){.hero{grid-template-columns:1fr}.hero .lead{border-right:0;border-bottom:1px solid var(--line)}}
+  .lead .thumb{aspect-ratio:16/9}
+  .lead .txt{padding:18px 22px 20px}
+  .lead h1{font-family:var(--serif);font-size:clamp(24px,3.2vw,38px);line-height:1.18;letter-spacing:-.015em;
+    margin:9px 0 10px}
+  .lead h1:hover{color:var(--brand)}
+  .lead .dek{font-size:15px;color:var(--ink2);line-height:1.62}
+  .side .mini{padding:14px 18px;border-bottom:1px solid var(--line2);flex:1;display:grid;
+    grid-template-columns:92px minmax(0,1fr);gap:13px;align-items:center}
+  .side .mini .thumb{aspect-ratio:1;border-radius:2px}
+  .side .mini .badge{display:none}
+  .side .mini .ph b,.item .ph b{font-size:11px;letter-spacing:.02em}
+  .side .mini:last-child{border-bottom:0}
+  .side h3{font-family:var(--serif);font-size:17px;line-height:1.34;margin-top:6px;letter-spacing:-.005em}
+  .side h3:hover{color:var(--brand)}
+
+  .thumb{position:relative;overflow:hidden;background:#101318}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb .ph{width:100%;height:100%;display:grid;place-items:center;position:relative}
+  .thumb .ph b{font-family:var(--serif);font-size:clamp(16px,2.4vw,26px);color:rgba(255,255,255,.9);
+    letter-spacing:.02em;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+  .thumb .ph:after{content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(125deg,rgba(255,255,255,.05) 0 2px,transparent 2px 10px)}
+  .badge{position:absolute;top:10px;left:10px;z-index:2;background:var(--brand);color:#fff;
+    font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:3px}
+  .badge.vid{background:#111;display:flex;align-items:center;gap:5px}
+
+  .meta{display:flex;gap:9px;align-items:center;font-size:11.5px;color:var(--ink3);flex-wrap:wrap;margin-top:9px}
+  .meta .d{width:3px;height:3px;border-radius:50%;background:#c7c2b8}
+
+  /* ---------- cards ---------- */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:3px;overflow:hidden;
+    transition:transform .18s,box-shadow .18s,border-color .18s;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#d3cfc6}
+  .card .thumb{aspect-ratio:16/10}
+  .card .bd{padding:13px 15px 16px;flex:1;display:flex;flex-direction:column}
+  .card h3{font-family:var(--serif);font-size:17px;line-height:1.34;letter-spacing:-.005em;margin-top:7px}
+  .card:hover h3{color:var(--brand)}
+  .card p{font-size:13px;color:var(--ink2);margin-top:7px;line-height:1.55}
+  .card .meta{margin-top:auto;padding-top:10px}
+
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+  .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+  @media(max-width:900px){.grid3,.grid4{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.grid3,.grid4{grid-template-columns:1fr}}
+
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:34px 0 15px;border-bottom:1px solid var(--ink);
+    padding-bottom:8px}
+  .sec-head h2{font-family:var(--serif);font-size:21px;font-weight:700;letter-spacing:-.01em}
+  .sec-head .sp{flex:1}
+  .sec-head a{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}
+  .sec-head a:hover{text-decoration:underline}
+
+  /* ---------- watch strip ---------- */
+  .watch{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  @media(max-width:900px){.watch{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.watch{grid-template-columns:1fr}}
+  .vcard{position:relative;border-radius:3px;overflow:hidden;background:#0d1014;color:#fff}
+  .vcard .thumb{aspect-ratio:16/9}
+  .vcard .play{position:absolute;inset:0;display:grid;place-items:center;z-index:3}
+  .vcard .play i{width:44px;height:44px;border-radius:50%;background:rgba(200,16,46,.92);display:grid;
+    place-items:center;color:#fff;font-size:15px;font-style:normal;padding-left:3px;
+    box-shadow:0 6px 20px -6px rgba(0,0,0,.8);transition:.18s}
+  .vcard:hover .play i{transform:scale(1.1)}
+  .vcard .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 11px;z-index:2;
+    background:linear-gradient(transparent,rgba(0,0,0,.85));font-size:13px;font-weight:600;line-height:1.35}
+
+  /* ---------- sidebar ---------- */
+  aside{position:sticky;top:64px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:16px 16px 6px;
+    margin-bottom:18px}
+  .panel h3{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);
+    border-bottom:2px solid var(--brand);display:inline-block;padding-bottom:7px;margin-bottom:4px}
+  .rank{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line2);align-items:flex-start}
+  .rank:last-child{border-bottom:0}
+  .rank b{font-family:var(--serif);font-size:19px;color:#cdc8bd;line-height:1;width:20px;flex:none}
+  .rank a{font-size:13.5px;font-weight:600;line-height:1.45}
+  .rank a:hover{color:var(--brand)}
+  .item{display:grid;grid-template-columns:78px minmax(0,1fr);gap:11px;padding:12px 0;
+    border-bottom:1px solid var(--line2)}
+  .item:last-child{border-bottom:0}
+  .item .thumb{aspect-ratio:1;border-radius:2px}
+  .item h4{font-family:var(--serif);font-size:13.5px;line-height:1.4;font-weight:700}
+  .item:hover h4{color:var(--brand)}
+  .item .meta{margin-top:4px}
+
+  .joinbox{background:var(--navy);color:#e8eef7;border-radius:4px;padding:20px;margin-bottom:18px}
+  .joinbox h3{font-family:var(--serif);font-size:19px;color:#fff;line-height:1.3;margin-bottom:7px}
+  .joinbox p{font-size:12.5px;color:#a9b8cb;line-height:1.6;margin-bottom:14px}
+  .joinbox button{width:100%;padding:10px;border-radius:3px;border:0;background:var(--brand);color:#fff;
+    font-weight:700;font-size:13px;letter-spacing:.04em}
+  .joinbox button:hover{background:var(--brand2)}
+
+  /* ---------- article ---------- */
+  .article{max-width:740px;margin-inline:auto}
+  .crumb{font-size:11.5px;color:var(--ink3);margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .crumb a:hover{color:var(--brand)}
+  .article h1{font-family:var(--serif);font-size:clamp(27px,3.8vw,42px);line-height:1.14;letter-spacing:-.02em;
+    margin:10px 0 12px}
+  .article .dek{font-family:var(--serif);font-size:18px;line-height:1.55;color:var(--ink2);margin-bottom:18px}
+  .byline{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);margin-bottom:22px;font-size:12px;color:var(--ink3);flex-wrap:wrap}
+  .byline b{color:var(--ink);font-size:13px;font-weight:700}
+  .lead-img{border-radius:3px;overflow:hidden;margin-bottom:8px;border:1px solid var(--line)}
+  .lead-img .thumb{aspect-ratio:16/9}
+  .cap{font-size:11.5px;color:var(--ink3);margin-bottom:22px}
+  .prose p{font-size:17px;line-height:1.85;margin-bottom:18px;color:#1b1e24}
+  .prose p:first-of-type:first-letter{font-family:var(--serif);font-size:54px;line-height:.84;float:left;
+    padding:7px 10px 0 0;color:var(--brand);font-weight:700}
+  .prose h3{font-family:var(--serif);font-size:21px;margin:26px 0 10px}
+  .prose blockquote{border-left:3px solid var(--brand);padding:4px 0 4px 18px;margin:22px 0;
+    font-family:var(--serif);font-size:19px;line-height:1.55;color:#232833}
+  .videoframe{position:relative;padding-top:56.25%;background:#000;border-radius:3px;overflow:hidden;
+    margin-bottom:20px}
+  .videoframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .videoframe .noplay{position:absolute;inset:0;display:grid;place-items:center;color:#8d95a2;font-size:13px;
+    text-align:center;padding:20px;line-height:1.6}
+  .tags{display:flex;gap:7px;flex-wrap:wrap;margin:22px 0}
+  .tags a{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:4px 11px;color:var(--ink2)}
+  .tags a:hover{border-color:var(--brand);color:var(--brand)}
+  .share{display:flex;gap:8px;align-items:center;margin:22px 0;flex-wrap:wrap;padding:14px 0;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .share span{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+  .share button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 15px;
+    font-size:12px;font-weight:600;color:var(--ink2)}
+  .share button:hover{border-color:var(--brand);color:var(--brand)}
+  .share button.on{background:#fff2f4;border-color:var(--brand);color:var(--brand)}
+
+  .comments{margin-top:30px;border-top:3px solid var(--ink);padding-top:18px}
+  .comments h3{font-family:var(--serif);font-size:20px;margin-bottom:14px}
+  .cform{display:flex;gap:10px;margin-bottom:18px}
+  .cform textarea{flex:1;min-height:64px;border:1px solid var(--line);border-radius:3px;padding:10px 12px;
+    background:var(--card);resize:vertical;font-size:14px;outline:none}
+  .cform textarea:focus{border-color:var(--brand)}
+  .comment{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid var(--line2)}
+  .comment .av{width:34px;height:34px;font-size:12px}
+  .comment .nm{font-weight:700;font-size:13px}
+  .comment .tm{font-size:11px;color:var(--ink3)}
+  .comment p{font-size:14px;color:#252a32;margin-top:4px;line-height:1.6}
+  .signin-note{background:var(--paper);border:1px dashed var(--line);border-radius:3px;padding:14px;
+    font-size:13px;color:var(--ink2);text-align:center}
+  .signin-note button{background:none;border:0;color:var(--brand);font-weight:700;font-size:13px}
+
+  /* ---------- buttons ---------- */
+  .btn{border:1px solid var(--line);background:var(--card);border-radius:3px;padding:10px 18px;font-size:13px;
+    font-weight:700;color:var(--ink2);transition:.15s}
+  .btn:hover{border-color:var(--ink3)}
+  .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+  .btn.primary:hover{background:var(--brand2)}
+  .btn.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+  .btn.ghost{background:transparent}
+  .btn.danger{color:#a01a1a;border-color:#eccaca}
+  .btn.danger:hover{background:#fdf1f1}
+  .btn.sm{padding:6px 11px;font-size:11.5px}
+
+  /* ---------- modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(10,12,16,.62);display:flex;align-items:center;
+    justify-content:center;padding:20px;z-index:200;backdrop-filter:blur(3px)}
+  .overlay.hide{display:none}
+  .modal{background:var(--card);border-radius:6px;width:min(430px,100%);padding:26px 26px 22px;
+    box-shadow:0 30px 70px -20px rgba(0,0,0,.6);max-height:92vh;overflow:auto}
+  .modal h2{font-family:var(--serif);font-size:24px;margin-bottom:5px;letter-spacing:-.01em}
+  .modal .sub{font-size:12.5px;color:var(--ink3);margin-bottom:18px;line-height:1.5}
+  .modal .x{position:absolute;top:14px;right:16px;border:0;background:none;font-size:20px;color:var(--ink3)}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink3);margin-bottom:5px}
+  .field input[type=text],.field input[type=email],.field input[type=password],.field input[type=url],
+  .field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:3px;padding:10px 12px;
+    background:var(--paper);outline:none;font-size:14px;transition:.15s}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand);background:#fff;
+    box-shadow:0 0 0 3px rgba(200,16,46,.08)}
+  .field textarea{min-height:200px;resize:vertical;line-height:1.7}
+  .field .hint{font-size:11px;color:var(--ink3);margin-top:4px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  @media(max-width:520px){.two{grid-template-columns:1fr}}
+  .fine{font-size:10.5px;color:var(--ink3);line-height:1.55;margin-top:12px;text-align:center}
+  .switch{text-align:center;font-size:12.5px;color:var(--ink3);margin-top:14px}
+  .switch button{background:none;border:0;color:var(--brand);font-weight:700;font-size:12.5px}
+
+  /* ---------- studio ---------- */
+  .studio-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;
+    flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:12px}
+  .studio-head h1{font-family:var(--serif);font-size:26px;letter-spacing:-.01em}
+  .studio-head p{font-size:12.5px;color:var(--ink3);margin-top:2px}
+  .tabs{display:flex;gap:2px;margin-bottom:20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .tabs button{border:0;background:none;padding:10px 15px;font-size:12.5px;font-weight:700;color:var(--ink3);
+    border-bottom:2px solid transparent;letter-spacing:.04em}
+  .tabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
+  .sgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+  @media(max-width:900px){.sgrid{grid-template-columns:minmax(0,1fr)}}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:18px}
+  .box h3{font-family:var(--serif);font-size:16px;margin-bottom:12px}
+  .astat{display:flex;gap:9px;margin-bottom:14px}
+  .astat div{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:9px;text-align:center}
+  .astat b{display:block;font-family:var(--serif);font-size:21px;line-height:1.2}
+  .astat span{font-size:10px;color:var(--ink3);letter-spacing:.09em;text-transform:uppercase}
+  .aitem{border:1px solid var(--line);border-radius:4px;padding:10px 11px;background:var(--paper);margin-bottom:8px}
+  .aitem h4{font-family:var(--serif);font-size:13px;line-height:1.4;margin-bottom:7px}
+  .aitem .r{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .aitem .r .btn{margin-left:auto}
+  .st{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px}
+  .st.pub{background:#e6f4ec;color:#0b6b3a;border:1px solid #bfe3cf}
+  .st.drf{background:#fff4d6;color:#7a5600;border:1px solid #e6c87a}
+  .alist{max-height:560px;overflow:auto}
+  .check{display:flex;align-items:center;gap:9px;font-size:13px;background:var(--paper);
+    border:1px solid var(--line);border-radius:3px;padding:10px 12px;color:var(--ink2)}
+  .check input{width:16px;height:16px;accent-color:var(--brand)}
+  .lockbox{max-width:420px;margin:60px auto;text-align:center;background:var(--card);border:1px solid var(--line);
+    border-radius:6px;padding:34px 26px}
+  .lockbox h2{font-family:var(--serif);font-size:23px;margin-bottom:6px}
+  .lockbox p{font-size:13px;color:var(--ink3);margin-bottom:18px;line-height:1.6}
+
+  /* ---------- misc ---------- */
+  .empty{text-align:center;padding:46px 16px;color:var(--ink3);font-size:14px}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--ink);color:#fff;
+    padding:11px 20px;border-radius:5px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;
+    transition:.25s;z-index:300}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  footer{background:var(--navy);color:#a9b8cb;padding:40px 0 26px;font-size:13px;margin-top:20px}
+  footer .cols{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:26px}
+  @media(max-width:820px){footer .cols{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){footer .cols{grid-template-columns:1fr}}
+  footer h4{color:#fff;font-family:var(--serif);font-size:15px;margin-bottom:10px}
+  footer a{display:block;padding:3px 0;color:#a9b8cb}
+  footer a:hover{color:#fff}
+  footer .base{border-top:1px solid #1c3352;margin-top:26px;padding-top:16px;display:flex;
+    justify-content:space-between;gap:14px;font-size:11.5px;flex-wrap:wrap;color:#7e8fa6}
+  @media(max-width:640px){
+    .mast .wrap{flex-wrap:wrap;gap:12px}
+    .mast-r{width:100%;justify-content:flex-start}
+    .wordmark{font-size:20px}
+    .globe{width:40px;height:40px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap">
+  <div class="l">
+    <span class="live"><i></i>LIVE</span>
+    <span id="todayStr">—</span>
+    <span id="clockStr">—</span>
+  </div>
+  <div class="r">
+    <a href="#/watch">Watch</a>
+    <a href="#/studio">Newsroom</a>
+    <a href="#/join" id="topJoin">Join</a>
+  </div>
+</div></div>
+
+<header class="mast"><div class="wrap">
+  <a class="brand" href="#/">
+    <svg class="globe" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" fill="#0b1f3a"/>
+      <circle cx="32" cy="32" r="21" fill="none" stroke="#c9a227" stroke-width="1.6" opacity=".9"/>
+      <ellipse cx="32" cy="32" rx="9" ry="21" fill="none" stroke="#c9a227" stroke-width="1.2" opacity=".7"/>
+      <path d="M11 32h42M15 20h34M15 44h34" stroke="#c9a227" stroke-width="1.1" opacity=".55"/>
+      <path d="M32 5v54" stroke="#c9a227" stroke-width="1.1" opacity=".45"/>
+      <circle cx="32" cy="32" r="30" fill="none" stroke="#c8102e" stroke-width="3"/>
+    </svg>
+    <div>
+      <div class="wordmark">Bharat <span>World Watch</span></div>
+      <div class="tagline">Global news · Indian lens</div>
+    </div>
+  </a>
+  <div class="mast-r" id="mastR">
+    <button class="icon-btn" id="searchBtn">Search</button>
+    <button class="icon-btn solid" id="joinBtn">Join free</button>
+  </div>
+</div></header>
+
+<div class="stick">
+  <nav class="nav"><div class="wrap" id="nav"></div></nav>
+  <div class="ticker"><div class="wrap">
+    <span class="tag">BREAKING</span>
+    <div class="track"><div class="move" id="ticker"></div></div>
+  </div></div>
+</div>
+
+<main><div class="wrap" id="app"></div></main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div>
+      <h4>Bharat World Watch</h4>
+      <p style="line-height:1.75;max-width:320px">Independent reporting on the world, from an Indian vantage point. A digital-first newsroom covering geopolitics, markets, technology and culture.</p>
+    </div>
+    <div><h4>Sections</h4><div id="footSec"></div></div>
+    <div><h4>Newsroom</h4>
+      <a href="#/studio">Studio login</a>
+      <a href="#/join">Become a member</a>
+      <a href="#/watch">Watch</a>
+    </div>
+    <div><h4>Contact</h4>
+      <a href="#/">Advertise</a>
+      <a href="#/">Send a tip</a>
+      <a href="#/">Privacy</a>
+    </div>
+  </div>
+  <div class="base">
+    <span>© <span id="year"></span> Bharat World Watch. All rights reserved.</span>
+    <span>Demo newsroom build — sample stories are illustrative.</span>
+  </div>
+</div></footer>
+
+<div class="overlay hide" id="overlay"><div class="modal" id="modal" style="position:relative"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+"use strict";
+
+/* =========================================================
+   Config
+   ========================================================= */
+var SECTIONS = [
+  { key: "world",    name: "World",    color: "#0b1f3a" },
+  { key: "india",    name: "India",    color: "#c8102e" },
+  { key: "politics", name: "Politics", color: "#7a3e00" },
+  { key: "business", name: "Business", color: "#0d6b4f" },
+  { key: "tech",     name: "Tech",     color: "#2b4a8b" },
+  { key: "sports",   name: "Sports",   color: "#155e9c" },
+  { key: "culture",  name: "Culture",  color: "#8e2f7a" },
+  { key: "opinion",  name: "Opinion",  color: "#5a5248" }
+];
+function sec(k) {
+  for (var i = 0; i < SECTIONS.length; i++) if (SECTIONS[i].key === k) return SECTIONS[i];
+  return { key: k, name: "News", color: "#5a5248" };
+}
+
+var SITE_KEY = "bww_site_v1";
+var MEM_KEY = "bww_members_v1";
+var SESS_KEY = "bww_session_v1";
+var DEFAULT_PASS = "BWW-2026";
+
+var db = { articles: [], comments: [], settings: {} };
+var members = { users: [] };
+
+/* =========================================================
+   Utils
+   ========================================================= */
+function uid(p) { return (p || "x") + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+function esc(s) {
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function hashStr(s) { var h = 0, i; for (i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360; return h; }
+function artStyle(a) {
+  var h = hashStr(a.title || a.id);
+  return "background:linear-gradient(150deg,hsl(" + h + ",40%,30%),hsl(" + ((h + 44) % 360) + ",48%,13%))";
+}
+function readKey(k, fallback) {
+  try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; }
+  catch (e) { return fallback; }
+}
+function writeKey(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+function dateStr(ts) {
+  var d = new Date(ts);
+  return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+}
+function relTime(ts) {
+  var m = Math.floor((Date.now() - ts) / 60000);
+  if (m < 1) return "just now";
+  if (m < 60) return m + "m ago";
+  var h = Math.floor(m / 60);
+  if (h < 24) return h + "h ago";
+  var dd = Math.floor(h / 24);
+  if (dd < 7) return dd + "d ago";
+  return dateStr(ts);
+}
+function readTime(body) {
+  var w = (body || "").trim().split(/\s+/).length;
+  return Math.max(1, Math.round(w / 200)) + " min read";
+}
+function ytId(u) {
+  if (!u) return null;
+  var m = String(u).match(/(?:youtube\.com\/watch\?[^#]*\bv=|\/embed\/|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+function vimeoId(u) {
+  if (!u) return null;
+  var m = String(u).match(/vimeo\.com\/(?:video\/)?(\d{6,})/);
+  return m ? m[1] : null;
+}
+
+/* =========================================================
+   Storage + seed
+   ========================================================= */
+function seedArticles() {
+  var A = [], t = Date.now();
+  function add(o) {
+    A.push({
+      id: uid("a"), title: o.t, dek: o.d || "", section: o.k, type: o.v ? "video" : "article",
+      body: o.b || "", image: "", videoUrl: "", tags: o.tags || [],
+      author: o.au || "BWW Newsroom", featured: !!o.f,
+      status: o.draft ? "draft" : "published",
+      createdAt: t - (o.ago || 0) * 36e5,
+      publishedAt: o.draft ? null : t - (o.ago || 0) * 36e5,
+      views: 800 + Math.floor(Math.random() * 9000)
+    });
+  }
+
+  add({ k: "world", f: true, ago: 1, au: "Meera Raghavan",
+    t: "Shipping lanes shift as northern sea routes open earlier each year",
+    d: "Arctic traffic is rising faster than the insurance and rescue systems built to manage it",
+    b: "Commercial traffic through Arctic waters has climbed again this season, with several operators running scheduled services that would have been unthinkable a decade ago. The opening is reshaping voyage planning for cargo moving between East Asia and Northern Europe.\n\nMaritime insurers say the bigger story is risk pricing. Search-and-rescue coverage, hull cover and salvage arrangements in remote waters remain patchy, and underwriters are still working out how to charge for a route where a bad-weather diversion can add days.\n\nPorts along the northern rim are investing in ice-class tugs and communications infrastructure. Analysts caution that the growth is uneven and highly sensitive to a single severe season.\n\nFor shippers, the calculus is straightforward: shorter distances against thinner support. Most large carriers still treat the route as a seasonal supplement rather than a replacement for established lanes." });
+
+  add({ k: "india", ago: 2, au: "Arjun Deshpande",
+    t: "Metro expansion reshapes commuter flows in three Indian cities",
+    d: "New corridors are pulling riders off roads faster than feeder services can keep up",
+    b: "Three metropolitan rail projects crossed significant milestones this quarter, adding corridors that connect employment districts to outer residential belts. Ridership on the new lines has climbed steadily since opening.\n\nThe constraint is now the last mile. Feeder buses and shared auto services have not expanded at the same pace, leaving stations with long queues at peak hours.\n\nCity planners say the next phase of spending will focus on interchange design and pedestrian access rather than new track. Commuter groups have asked for clearer real-time information across operators." });
+
+  add({ k: "business", ago: 3, au: "Priya Nair",
+    t: "Central banks signal a slower path on rate cuts as services inflation holds",
+    d: "Policymakers are watching wage data more closely than headline prices",
+    b: "Several major central banks have nudged expectations toward a slower easing cycle, citing sticky services inflation and resilient labour markets. Markets that had priced in aggressive cuts have adjusted.\n\nThe debate has moved from whether inflation is falling to how quickly it settles near target. Services prices, which track wages more closely than goods, are proving the harder half of the puzzle.\n\nFor emerging markets, the implication is a longer stretch of tight external financial conditions. Currency managers have been building reserves and extending the maturity of local borrowing.\n\nEconomists warn that the risk of over-tightening has not disappeared; the gap between policy decisions and their effect on hiring is long and uneven." });
+
+  add({ k: "tech", ago: 4, au: "Rohan Iyer",
+    t: "Chipmakers race to secure power as data centre demand outpaces grids",
+    d: "Electricity, not silicon, is emerging as the binding constraint on AI expansion",
+    b: "Data centre operators are signing long-term power agreements at a pace that has surprised utilities. In several regions, grid connection queues now stretch longer than the construction timelines for the facilities themselves.\n\nChip designers are responding with efficiency roadmaps, but the arithmetic of training large models still points to rising electricity demand. Some operators are turning to on-site generation and behind-the-meter storage.\n\nRegulators are beginning to ask who pays for network upgrades. Utilities argue that large users should carry more of the cost; operators say that would slow build-out.\n\nThe next two years will likely be decided by permitting and transmission, not by transistor density." });
+
+  add({ k: "sports", ago: 5, au: "Kabir Shah",
+    t: "Test cricket's packed calendar raises fresh questions over player workload",
+    d: "Administrators weigh expanded tours against a shrinking recovery window",
+    b: "A crowded international calendar has put workload management back at the centre of the sport. Several boards have rotated squads through back-to-back series, and players' associations are asking for minimum rest periods to be written into contracts.\n\nCoaches argue that the quality of the contest suffers when key players are rested mid-series. Broadcasters, who fund much of the game, want full-strength fixtures.\n\nThe compromise under discussion is a longer off-season for multi-format players, offset by expanded domestic windows.\n\nNothing has been agreed, but the direction of travel is clear: the calendar is the sport's hardest negotiation." });
+
+  add({ k: "culture", ago: 6, au: "Ananya Bose",
+    t: "Restored film archive opens a window on mid-century city life",
+    d: "Digitised reels show streets, markets and festivals that no longer exist",
+    b: "A restoration project has brought a set of mid-century documentary reels back into circulation. The footage captures street markets, tram lines and festival processions in cities that have since been rebuilt several times over.\n\nArchivists spent two years stabilising the film and synchronising surviving audio. Historians describe the material as unusually rich because it records ordinary routines rather than official ceremonies.\n\nPublic screenings begin next month, with a free online catalogue planned. The project team is asking families who recognise people in the footage to help identify them." });
+
+  add({ k: "opinion", ago: 7, au: "Editorial Board",
+    t: "The world needs better rules for the data behind AI models",
+    d: "Consent, compensation and provenance are still unresolved outside a handful of jurisdictions",
+    b: "The argument over training data has moved from technical forums into courtrooms and parliaments. What remains missing is a workable framework that protects creators without freezing research.\n\nThree questions recur. What counts as consent when material is publicly available? How should compensation work when a model's output cannot be traced to a specific source? And who verifies provenance at scale?\n\nPilot schemes exist, but they are fragmented. A patchwork of national rules will raise costs for everyone and advantage whoever chooses to ignore them.\n\nThe practical path is unglamorous: mandatory disclosure of data sources, clear opt-out mechanisms, and independent audits. None of it is technically difficult. All of it requires political will." });
+
+  add({ k: "world", ago: 8, au: "Meera Raghavan",
+    t: "Coastal cities test new storm-surge defences after a costly season",
+    d: "Engineering is only half the problem; maintenance budgets decide the rest",
+    b: "Cities along exposed coastlines are accelerating work on barriers, wetlands and drainage upgrades after a season of costly flooding. Several projects combine hard infrastructure with managed retreat from the most vulnerable strips.\n\nEngineers point out that defences fail through neglect more often than design. Maintenance is unglamorous and easy to defer, which is exactly why it gets deferred.\n\nCommunity groups are pushing for clearer disclosure of which neighbourhoods are protected to what standard, arguing that residents plan their lives around those numbers." });
+
+  add({ k: "business", ago: 10, au: "Priya Nair",
+    t: "Small exporters turn to regional trade pacts as global demand cools",
+    d: "Rules of origin are becoming the decisive detail for mid-sized firms",
+    b: "Mid-sized exporters are reworking supply chains to qualify under newer regional trade agreements, where tariff benefits hinge on detailed rules of origin. Compliance teams that were once a back-office function now sit in commercial planning.\n\nTrade lawyers say the winners are firms that can document inputs at every stage. For smaller manufacturers, the paperwork is a barrier that advisory services are only beginning to address.\n\nThe shift is gradual but visible in customs data: intra-regional flows are growing faster than long-haul trade." });
+
+  add({ k: "india", ago: 12, au: "Arjun Deshpande",
+    t: "Rural health clinics go digital, but connectivity remains uneven",
+    d: "Tele-consultation is expanding; reliable bandwidth is not",
+    b: "A tele-consultation programme linking rural clinics to district hospitals has expanded to thousands of facilities. Early data suggests shorter waiting times for specialist opinions.\n\nThe limiting factor is connectivity. Several clinics report dropped sessions during peak hours, and power interruptions remain common.\n\nHealth administrators say the next phase will pair connectivity upgrades with training for auxiliary staff, who currently absorb most of the operational burden." });
+
+  add({ k: "tech", ago: 14, au: "Rohan Iyer", v: true,
+    t: "Explainer: how satellite constellations are changing disaster response",
+    d: "Faster imagery is reshaping the first 48 hours after a major event",
+    b: "Commercial satellite constellations now deliver imagery within hours rather than days, changing how agencies plan the first response to floods, fires and earthquakes.\n\nThe constraint has shifted from capture to analysis. Teams need trained interpreters and pre-agreed data-sharing arrangements before an event, not after.\n\nThis explainer walks through how the workflow has changed and where the gaps remain." });
+
+  add({ k: "world", ago: 16, au: "BWW Newsroom", v: true,
+    t: "Watch: inside a city rebuilding its flood defences",
+    d: "A short film on engineering, politics and patience",
+    b: "Our team spent two weeks with engineers and residents as a coastal city rebuilt defences that failed last season." });
+
+  add({ k: "opinion", ago: 0, draft: true,
+    t: "[Draft] Why the next trade round matters more than the last one",
+    d: "Working draft", b: "Draft body — write here." });
+
+  add({ k: "sports", ago: 0, draft: true,
+    t: "[Draft] The economics of hosting a mega event",
+    d: "Working draft", b: "Draft body — write here." });
+
+  return A;
+}
+
+function loadAll() {
+  var site = readKey(SITE_KEY, null);
+  if (!site || !site.articles) {
+    db = {
+      articles: seedArticles(),
+      comments: [],
+      settings: {
+        breaking: "Bharat World Watch launches its global edition · Markets steady as central banks hold · Arctic shipping season opens early · Tech giants sign long-term power deals",
+        passcode: DEFAULT_PASS,
+        tagline: "Global news · Indian lens"
+      }
+    };
+    writeKey(SITE_KEY, db);
+  } else {
+    db = site;
+    if (!db.comments) db.comments = [];
+    if (!db.settings) db.settings = {};
+    if (!db.settings.passcode) db.settings.passcode = DEFAULT_PASS;
+  }
+  members = readKey(MEM_KEY, { users: [] });
+  if (!members || !members.users) members = { users: [] };
+}
+function saveSite() { writeKey(SITE_KEY, db); }
+function saveMembers() { writeKey(MEM_KEY, members); }
+
+function currentUser() {
+  var id = readKey(SESS_KEY, null);
+  if (!id) return null;
+  for (var i = 0; i < members.users.length; i++) if (members.users[i].id === id) return members.users[i];
+  return null;
+}
+function setSession(id) { writeKey(SESS_KEY, id); }
+
+/* =========================================================
+   Chrome
+   ========================================================= */
+var app = document.getElementById("app");
+var overlay = document.getElementById("overlay");
+var modal = document.getElementById("modal");
+
+function buildChrome() {
+  var nav = document.getElementById("nav"), h = '<a href="#/">Home</a>';
+  SECTIONS.forEach(function (s) { h += '<a href="#/section/' + s.key + '">' + s.name + "</a>"; });
+  h += '<a href="#/watch">Watch</a><span class="sp"></span><a class="studio" href="#/studio">Studio</a>';
+  nav.innerHTML = h;
+
+  document.getElementById("footSec").innerHTML = SECTIONS.map(function (s) {
+    return '<a href="#/section/' + s.key + '">' + s.name + "</a>";
+  }).join("");
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+  tickTicker(); clock(); setInterval(clock, 30000); paintAuth();
+}
+
+function paintAuth() {
+  var u = currentUser();
+  var box = document.getElementById("mastR");
+  if (u) {
+    box.innerHTML = '<a class="who" href="#/member"><span class="av">' + esc(u.name.slice(0, 1).toUpperCase()) +
+      '</span><span style="font-size:12.5px;font-weight:700">' + esc(u.name.split(" ")[0]) + "</span></a>" +
+      '<button class="icon-btn" id="signOutBtn">Sign out</button>';
+    document.getElementById("signOutBtn").addEventListener("click", function () {
+      setSession(null); paintAuth(); toast("Signed out"); route();
+    });
+  } else {
+    box.innerHTML = '<button class="icon-btn" id="searchBtn">Search</button>' +
+      '<button class="icon-btn" id="signBtn">Sign in</button>' +
+      '<button class="icon-btn solid" id="joinBtn">Join free</button>';
+    document.getElementById("searchBtn").addEventListener("click", openSearch);
+    document.getElementById("signBtn").addEventListener("click", function () { openAuth("signin"); });
+    document.getElementById("joinBtn").addEventListener("click", function () { openAuth("join"); });
+  }
+}
+
+function tickTicker() {
+  var txt = (db.settings && db.settings.breaking) || "Bharat World Watch — global news, Indian lens";
+  var items = txt.split("·").map(function (s) { return s.trim(); }).filter(Boolean);
+  var el = document.getElementById("ticker");
+  var h = items.map(function (s) { return "<span>" + esc(s) + "</span>"; }).join("");
+  el.innerHTML = h + h;
+}
+
+function clock() {
+  var d = new Date();
+  document.getElementById("todayStr").textContent =
+    DAYS[d.getDay()] + ", " + d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+  var hh = d.getHours(), mm = d.getMinutes();
+  document.getElementById("clockStr").textContent =
+    (hh < 10 ? "0" : "") + hh + ":" + (mm < 10 ? "0" : "") + mm + " IST";
+}
+
+function markNav(key) {
+  var links = document.querySelectorAll(".nav a");
+  for (var i = 0; i < links.length; i++) links[i].classList.remove("on");
+  for (i = 0; i < links.length; i++) {
+    var href = links[i].getAttribute("href");
+    if (key && href === "#/section/" + key) links[i].classList.add("on");
+    if (!key && href === "#/") links[i].classList.add("on");
+  }
+}
+
+/* =========================================================
+   Cards
+   ========================================================= */
+function thumb(a, cls) {
+  var s = sec(a.section);
+  var inner;
+  if (a.image && /^https?:\/\//i.test(a.image)) {
+    inner = '<img src="' + esc(a.image) + '" alt="' + esc(a.title) + '" loading="lazy" ' +
+      'onerror="this.style.display=\'none\';this.parentNode.innerHTML=\'<div class=&quot;ph&quot; style=&quot;' +
+      esc(artStyle(a)) + '&quot;><b>' + esc(s.name) + '</b></div>\'">';
+  } else {
+    inner = '<div class="ph" style="' + artStyle(a) + '"><b>' + esc(s.name) + "</b></div>";
+  }
+  var badge = a.type === "video"
+    ? '<span class="badge vid">▶ Video</span>'
+    : '<span class="badge" style="background:' + s.color + '">' + esc(s.name) + "</span>";
+  return '<div class="thumb' + (cls ? " " + cls : "") + '">' + badge + inner + "</div>";
+}
+
+function card(a) {
+  return '<a class="card" href="#/story/' + a.id + '">' + thumb(a) +
+    '<div class="bd"><span class="kicker" style="color:' + sec(a.section).color + '">' +
+    esc(sec(a.section).name) + "</span><h3>" + esc(a.title) + "</h3>" +
+    (a.dek ? "<p>" + esc(a.dek) + "</p>" : "") +
+    '<div class="meta"><span>' + relTime(a.publishedAt || a.createdAt) + "</span></div></div></a>";
+}
+
+function item(a) {
+  return '<a class="item" href="#/story/' + a.id + '">' + thumb(a) +
+    '<div><h4>' + esc(a.title) + '</h4><div class="meta"><span>' +
+    esc(sec(a.section).name) + '</span><span class="d"></span><span>' +
+    relTime(a.publishedAt || a.createdAt) + "</span></div></div></a>";
+}
+
+function vcard(a) {
+  return '<a class="vcard" href="#/story/' + a.id + '">' + thumb(a) +
+    '<span class="play"><i>▶</i></span>' +
+    '<span class="cap">' + esc(a.title) + "</span></a>";
+}
+
+/* =========================================================
+   Selectors
+   ========================================================= */
+function published() {
+  return db.articles.filter(function (a) { return a.status === "published"; })
+    .sort(function (x, y) { return (y.publishedAt || 0) - (x.publishedAt || 0); });
+}
+function bySection(k) { return published().filter(function (a) { return a.section === k; }); }
+function getArticle(id) {
+  for (var i = 0; i < db.articles.length; i++) if (db.articles[i].id === id) return db.articles[i];
+  return null;
+}
+
+/* =========================================================
+   Home
+   ========================================================= */
+function renderHome() {
+  var pub = published();
+  if (!pub.length) {
+    app.innerHTML = '<div class="empty">No stories published yet. Open the <a href="#/studio" style="color:#c8102e;font-weight:700">Studio</a> to publish the first one.</div>';
+    return;
+  }
+  var hero = pub.filter(function (a) { return a.featured; })[0] || pub[0];
+  var rest = pub.filter(function (a) { return a.id !== hero.id; });
+  var side = rest.slice(0, 3);
+  var vids = pub.filter(function (a) { return a.type === "video"; }).slice(0, 4);
+  var h = "";
+
+  h += '<div class="hero"><a class="lead" href="#/story/' + hero.id + '">' + thumb(hero) +
+    '<div class="txt"><span class="kicker">' + esc(sec(hero.section).name) + "</span>" +
+    "<h1>" + esc(hero.title) + "</h1>" +
+    (hero.dek ? '<p class="dek">' + esc(hero.dek) + "</p>" : "") +
+    '<div class="meta"><span>' + esc(hero.author) + '</span><span class="d"></span><span>' +
+    relTime(hero.publishedAt) + "</span></div></div></a>";
+  h += '<div class="side">';
+  side.forEach(function (a) {
+    h += '<a class="mini" href="#/story/' + a.id + '">' + thumb(a) +
+      '<div><span class="kicker" style="color:' + sec(a.section).color + '">' + esc(sec(a.section).name) +
+      "</span><h3>" + esc(a.title) + "</h3>" +
+      '<div class="meta"><span>' + relTime(a.publishedAt) + "</span></div></div></a>";
+  });
+  h += "</div></div>";
+
+  if (vids.length) {
+    h += '<div class="sec-head"><h2>Watch</h2><span class="sp"></span><a href="#/watch">All video →</a></div>';
+    h += '<div class="watch">' + vids.map(vcard).join("") + "</div>";
+  }
+
+  h += '<div class="row"><div>';
+
+  SECTIONS.forEach(function (s) {
+    var items = bySection(s.key);
+    if (!items.length) return;
+    h += '<div class="sec-head"><h2>' + s.name + '</h2><span class="sp"></span>' +
+      '<a href="#/section/' + s.key + '">More →</a></div>';
+    h += '<div class="grid3">' + items.slice(0, 3).map(card).join("") + "</div>";
+  });
+
+  h += "</div><aside>";
+  h += '<div class="panel"><h3>Most read</h3>';
+  pub.slice().sort(function (a, b) { return (b.views || 0) - (a.views || 0); }).slice(0, 5)
+    .forEach(function (a, i) {
+      h += '<div class="rank"><b>' + (i + 1) + '</b><a href="#/story/' + a.id + '">' + esc(a.title) + "</a></div>";
+    });
+  h += "</div>";
+
+  if (!currentUser()) {
+    h += '<div class="joinbox"><h3>Join Bharat World Watch</h3>' +
+      "<p>Create a free account to comment, save stories and get the morning brief.</p>" +
+      '<button data-open="join">Create free account</button></div>';
+  }
+
+  h += '<div class="panel"><h3>Latest</h3><div class="list">' +
+    rest.slice(0, 6).map(item).join("") + "</div></div>";
+  h += "</aside></div>";
+
+  app.innerHTML = h;
+  markNav(null);
+  bindOpeners();
+}
+
+/* =========================================================
+   Section / Watch / Search
+   ========================================================= */
+function renderSection(key) {
+  var s = sec(key), items = bySection(key);
+  var h = '<div class="sec-head"><h2>' + s.name + '</h2><span class="sp"></span><a href="#/">← Home</a></div>';
+  h += items.length
+    ? '<div class="grid3">' + items.map(card).join("") + "</div>"
+    : '<div class="empty">Nothing published in this section yet.</div>';
+  app.innerHTML = h;
+  markNav(key);
+}
+
+function renderWatch() {
+  var vids = published().filter(function (a) { return a.type === "video"; });
+  var h = '<div class="sec-head"><h2>Watch</h2><span class="sp"></span><a href="#/">← Home</a></div>';
+  h += vids.length
+    ? '<div class="grid3">' + vids.map(card).join("") + "</div>"
+    : '<div class="empty">No video published yet.</div>';
+  app.innerHTML = h;
+  markNav("watch");
+}
+
+function renderSearch(q) {
+  var term = (q || "").toLowerCase().trim();
+  var res = published().filter(function (a) {
+    return (a.title + " " + a.dek + " " + a.body + " " + (a.tags || []).join(" ")).toLowerCase().indexOf(term) >= 0;
+  });
+  var h = '<div class="sec-head"><h2>Search: “' + esc(q) + '”</h2><span class="sp"></span><a href="#/">← Home</a></div>';
+  h += res.length ? '<div class="grid3">' + res.map(card).join("") + "</div>"
+    : '<div class="empty">No stories matched. Try another word.</div>';
+  app.innerHTML = h;
+  markNav(null);
+}
+
+/* =========================================================
+   Article
+   ========================================================= */
+function renderStory(id) {
+  var a = getArticle(id);
+  if (!a) {
+    app.innerHTML = '<div class="empty">Story not found. <a href="#/" style="color:#c8102e;font-weight:700">Back home</a></div>';
+    return;
+  }
+  a.views = (a.views || 0) + 1; saveSite();
+
+  var s = sec(a.section);
+  var u = currentUser();
+  var paras = (a.body || "").split(/\n{2,}/).filter(function (p) { return p.trim(); });
+
+  var h = '<div class="article">';
+  h += '<div class="crumb"><a href="#/">Home</a> › <a href="#/section/' + s.key + '">' + s.name + "</a></div>";
+  if (a.status === "draft") h += '<div style="background:#fff4d6;border:1px solid #e6c87a;color:#6b4a00;border-radius:3px;padding:9px 13px;font-size:12.5px;margin-bottom:14px;font-weight:600">Draft — visible only in this browser until published.</div>';
+  h += '<span class="kicker" style="color:' + s.color + '">' + esc(s.name) + (a.type === "video" ? " · Video" : "") + "</span>";
+  h += "<h1>" + esc(a.title) + "</h1>";
+  if (a.dek) h += '<p class="dek">' + esc(a.dek) + "</p>";
+  h += '<div class="byline"><span class="av">' + esc((a.author || "B").slice(0, 1).toUpperCase()) + "</span>" +
+    "<span><b>" + esc(a.author || "BWW Newsroom") + "</b><br>" +
+    dateStr(a.publishedAt || a.createdAt) + " · " + readTime(a.body) + "</span>" +
+    '<span style="margin-left:auto">' + (a.views || 0) + " views</span></div>";
+
+  if (a.type === "video") {
+    var yid = ytId(a.videoUrl), vid = vimeoId(a.videoUrl);
+    h += '<div class="videoframe">';
+    if (yid) h += '<iframe src="https://www.youtube.com/embed/' + yid + '?rel=0" allowfullscreen title="' + esc(a.title) + '"></iframe>';
+    else if (vid) h += '<iframe src="https://player.vimeo.com/video/' + vid + '" allowfullscreen title="' + esc(a.title) + '"></iframe>';
+    else if (a.videoUrl && /\.(mp4|webm|ogg)(\?|$)/i.test(a.videoUrl))
+      h += '<video controls playsinline src="' + esc(a.videoUrl) + '" style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>';
+    else h += '<div class="noplay">No video attached to this post yet.<br>Add a YouTube, Vimeo or .mp4 link in the Studio.</div>';
+    h += "</div>";
+  } else {
+    h += '<div class="lead-img">' + thumb(a) + "</div>";
+    h += '<div class="cap">Image: Bharat World Watch archive</div>';
+  }
+
+  h += '<div class="prose">';
+  paras.forEach(function (p) {
+    if (p.indexOf("> ") === 0) h += "<blockquote>" + esc(p.slice(2)) + "</blockquote>";
+    else if (p.indexOf("## ") === 0) h += "<h3>" + esc(p.slice(3)) + "</h3>";
+    else h += "<p>" + esc(p) + "</p>";
+  });
+  h += "</div>";
+
+  if (a.tags && a.tags.length) {
+    h += '<div class="tags">' + a.tags.map(function (t) {
+      return '<a href="#/search/' + encodeURIComponent(t) + '">#' + esc(t) + "</a>";
+    }).join("") + "</div>";
+  }
+
+  var saved = u && (u.saved || []).indexOf(a.id) >= 0;
+  h += '<div class="share"><span>Share</span>' +
+    '<button data-share="copy">Copy link</button>' +
+    '<button data-share="wa">WhatsApp</button>' +
+    '<button data-share="x">X</button>' +
+    '<button data-share="print">Print</button>' +
+    '<button data-share="save" class="' + (saved ? "on" : "") + '">' + (saved ? "★ Saved" : "☆ Save") + "</button></div>";
+
+  /* comments */
+  var cs = db.comments.filter(function (c) { return c.articleId === a.id; })
+    .sort(function (x, y) { return y.ts - x.ts; });
+  h += '<div class="comments"><h3>Comments (' + cs.length + ")</h3>";
+  if (u) {
+    h += '<div class="cform"><textarea id="cText" placeholder="Write a comment…"></textarea>' +
+      '<button class="btn primary" id="cSend">Post</button></div>';
+  } else {
+    h += '<div class="signin-note">Join the conversation. <button data-open="join">Create a free account</button> or <button data-open="signin">sign in</button> to comment.</div>';
+  }
+  cs.forEach(function (c) {
+    h += '<div class="comment"><span class="av">' + esc(c.name.slice(0, 1).toUpperCase()) + "</span>" +
+      '<div><span class="nm">' + esc(c.name) + '</span> <span class="tm">· ' + relTime(c.ts) + "</span>" +
+      "<p>" + esc(c.text) + "</p></div></div>";
+  });
+  if (!cs.length) h += '<div style="font-size:13px;color:#767f8b;padding:6px 0 12px">No comments yet. Be the first.</div>';
+  h += "</div>";
+
+  var rel = published().filter(function (x) { return x.section === a.section && x.id !== a.id; }).slice(0, 3);
+  if (rel.length) {
+    h += '<div class="sec-head"><h2>More in ' + s.name + '</h2><span class="sp"></span></div>';
+    h += '<div class="grid3">' + rel.map(card).join("") + "</div>";
+  }
+  h += "</div>";
+
+  app.innerHTML = h;
+  markNav(a.section);
+  bindOpeners();
+
+  app.querySelectorAll("[data-share]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var kind = b.getAttribute("data-share");
+      var url = location.href;
+      if (kind === "copy") { if (navigator.clipboard) navigator.clipboard.writeText(url); toast("Link copied"); }
+      else if (kind === "wa") window.open("https://wa.me/?text=" + encodeURIComponent(a.title + " " + url), "_blank");
+      else if (kind === "x") window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(a.title) + "&url=" + encodeURIComponent(url), "_blank");
+      else if (kind === "print") window.print();
+      else if (kind === "save") {
+        if (!u) { openAuth("join"); return; }
+        u.saved = u.saved || [];
+        var i = u.saved.indexOf(a.id);
+        if (i >= 0) { u.saved.splice(i, 1); b.textContent = "☆ Save"; b.classList.remove("on"); toast("Removed from saved"); }
+        else { u.saved.push(a.id); b.textContent = "★ Saved"; b.classList.add("on"); toast("Saved to your account"); }
+        saveMembers();
+      }
+    });
+  });
+
+  var send = document.getElementById("cSend");
+  if (send) send.addEventListener("click", function () {
+    var t = document.getElementById("cText").value.trim();
+    if (!t) return;
+    db.comments.push({ id: uid("c"), articleId: a.id, memberId: u.id, name: u.name, text: t, ts: Date.now() });
+    saveSite(); renderStory(a.id);
+  });
+}
+
+/* =========================================================
+   Member page
+   ========================================================= */
+function renderMember() {
+  var u = currentUser();
+  if (!u) { app.innerHTML = '<div class="empty">Please sign in.</div>'; openAuth("signin"); return; }
+  var saved = (u.saved || []).map(getArticle).filter(Boolean);
+  var mine = db.comments.filter(function (c) { return c.memberId === u.id; });
+  var h = '<div class="sec-head"><h2>Your account</h2><span class="sp"></span><a href="#/">← Home</a></div>';
+  h += '<div class="sgrid"><div>';
+  h += '<div class="box"><h3>' + esc(u.name) + "</h3>" +
+    '<p style="font-size:13px;color:#767f8b">' + esc(u.email) + " · member since " + dateStr(u.joined) + "</p>" +
+    '<p style="font-size:13px;margin-top:8px">' + (u.country ? esc(u.country) : "—") + "</p></div>";
+  h += '<div class="sec-head"><h2>Saved stories</h2><span class="sp"></span></div>';
+  h += saved.length ? '<div class="grid3">' + saved.map(card).join("") + "</div>"
+    : '<div class="empty">Nothing saved yet. Tap ☆ Save on any story.</div>';
+  h += '<div class="sec-head"><h2>Your comments</h2><span class="sp"></span></div>';
+  if (mine.length) {
+    mine.slice().reverse().forEach(function (c) {
+      var art = getArticle(c.articleId);
+      h += '<div class="comment"><span class="av">' + esc(u.name.slice(0, 1).toUpperCase()) + "</span><div>" +
+        '<span class="tm">' + relTime(c.ts) + ' · on <a href="#/story/' + c.articleId + '" style="color:#c8102e">' +
+        esc(art ? art.title : "story") + "</a></span><p>" + esc(c.text) + "</p></div></div>";
+    });
+  } else h += '<div class="empty">No comments yet.</div>';
+  h += "</div><aside>";
+  h += '<div class="panel"><h3>Membership</h3><div style="padding:6px 0 12px;font-size:13px;line-height:1.7;color:#414852">' +
+    "Free account · commenting, saving stories and the daily brief.</div></div>";
+  h += "</aside></div>";
+  app.innerHTML = h;
+  markNav(null);
+}
+
+/* =========================================================
+   Auth modal
+   ========================================================= */
+function closeModal() { overlay.classList.add("hide"); }
+overlay.addEventListener("click", function (e) { if (e.target === overlay) closeModal(); });
+
+function openAuth(mode) {
+  var isJoin = mode === "join";
+  modal.innerHTML =
+    '<button class="x" id="mx">×</button>' +
+    "<h2>" + (isJoin ? "Join Bharat World Watch" : "Welcome back") + "</h2>" +
+    '<p class="sub">' + (isJoin
+      ? "Free membership: comment on stories, save them for later, and get the morning brief."
+      : "Sign in to comment and pick up where you left off.") + "</p>" +
+    (isJoin ? '<div class="field"><label for="mName">Full name</label><input id="mName" type="text" placeholder="Your name"></div>' : "") +
+    '<div class="field"><label for="mEmail">Email</label><input id="mEmail" type="email" placeholder="you@example.com"></div>' +
+    '<div class="field"><label for="mPass">Password</label><input id="mPass" type="password" placeholder="At least 6 characters"></div>' +
+    (isJoin ? '<div class="field"><label for="mCountry">Country (optional)</label><input id="mCountry" type="text" placeholder="India"></div>' : "") +
+    '<button class="btn primary" id="mGo" style="width:100%;margin-top:6px">' + (isJoin ? "Create account" : "Sign in") + "</button>" +
+    '<div class="switch">' + (isJoin ? "Already a member? " : "New here? ") +
+    '<button id="mSwitch">' + (isJoin ? "Sign in" : "Create an account") + "</button></div>" +
+    '<p class="fine">Demo build: accounts are stored in this browser only. A production newsroom needs a server and database for real accounts.</p>';
+
+  overlay.classList.remove("hide");
+  document.getElementById("mx").addEventListener("click", closeModal);
+  document.getElementById("mSwitch").addEventListener("click", function () { openAuth(isJoin ? "signin" : "join"); });
+  document.getElementById("mGo").addEventListener("click", function () {
+    var email = document.getElementById("mEmail").value.trim().toLowerCase();
+    var pass = document.getElementById("mPass").value;
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { toast("Enter a valid email"); return; }
+    if (!pass || pass.length < 6) { toast("Password needs 6+ characters"); return; }
+
+    if (isJoin) {
+      var name = document.getElementById("mName").value.trim();
+      if (!name) { toast("Enter your name"); return; }
+      var exists = members.users.some(function (u) { return u.email === email; });
+      if (exists) { toast("That email is already registered"); return; }
+      var user = {
+        id: uid("u"), name: name, email: email, pass: pass,
+        country: document.getElementById("mCountry").value.trim(),
+        joined: Date.now(), saved: []
+      };
+      members.users.push(user); saveMembers(); setSession(user.id);
+      closeModal(); paintAuth(); toast("Welcome, " + name.split(" ")[0] + "!"); route();
+    } else {
+      var found = null;
+      members.users.forEach(function (u) { if (u.email === email && u.pass === pass) found = u; });
+      if (!found) { toast("Email or password is not right"); return; }
+      setSession(found.id); closeModal(); paintAuth(); toast("Signed in"); route();
+    }
+  });
+}
+
+function openSearch() {
+  modal.innerHTML = '<button class="x" id="mx">×</button><h2>Search</h2>' +
+    '<p class="sub">Find stories across every section.</p>' +
+    '<div class="field"><input id="qIn" type="text" placeholder="e.g. markets, Arctic, metro"></div>' +
+    '<button class="btn primary" id="qGo" style="width:100%">Search</button>';
+  overlay.classList.remove("hide");
+  document.getElementById("mx").addEventListener("click", closeModal);
+  var go = function () {
+    var q = document.getElementById("qIn").value.trim();
+    if (!q) return;
+    closeModal(); location.hash = "#/search/" + encodeURIComponent(q);
+  };
+  document.getElementById("qGo").addEventListener("click", go);
+  document.getElementById("qIn").addEventListener("keydown", function (e) { if (e.key === "Enter") go(); });
+  setTimeout(function () { var i = document.getElementById("qIn"); if (i) i.focus(); }, 60);
+}
+
+function bindOpeners() {
+  app.querySelectorAll("[data-open]").forEach(function (b) {
+    b.addEventListener("click", function () { openAuth(b.getAttribute("data-open")); });
+  });
+}
+
+/* =========================================================
+   Studio
+   ========================================================= */
+var studioUnlocked = false;
+var studioTab = "write";
+var editingId = null;
+
+function renderStudio() {
+  if (!studioUnlocked) {
+    app.innerHTML = '<div class="lockbox"><h2>Studio access</h2>' +
+      "<p>This is the newsroom desk. Enter the passcode to write and publish.</p>" +
+      '<div class="field"><input id="pc" type="password" placeholder="Passcode" style="text-align:center"></div>' +
+      '<button class="btn primary" id="pcGo" style="width:100%">Unlock</button>' +
+      '<p class="fine" style="margin-top:14px">Default passcode: <b>' + esc(db.settings.passcode) + "</b><br>" +
+      "Change it in Settings once you are inside.</p></div>";
+    markNav(null);
+    var go = function () {
+      var v = document.getElementById("pc").value;
+      if (v === db.settings.passcode) { studioUnlocked = true; renderStudio(); }
+      else toast("Wrong passcode");
+    };
+    document.getElementById("pcGo").addEventListener("click", go);
+    document.getElementById("pc").addEventListener("keydown", function (e) { if (e.key === "Enter") go(); });
+    return;
+  }
+
+  var pub = db.articles.filter(function (a) { return a.status === "published"; });
+  var drf = db.articles.filter(function (a) { return a.status === "draft"; });
+
+  var h = '<div class="studio-head"><div><h1>Studio</h1>' +
+    "<p>Write, attach video, publish. Everything you publish is live on the site instantly.</p></div>" +
+    '<div style="display:flex;gap:8px"><button class="btn" id="lockBtn">Lock</button>' +
+    '<button class="btn primary" id="newBtn">+ New story</button></div></div>';
+
+  h += '<div class="tabs">' +
+    ["write:Write", "posts:Posts", "members:Members", "settings:Settings"].map(function (t) {
+      var k = t.split(":")[0], n = t.split(":")[1];
+      return '<button data-tab="' + k + '" class="' + (studioTab === k ? "on" : "") + '">' + n + "</button>";
+    }).join("") + "</div>";
+
+  if (studioTab === "write") {
+    h += '<div class="sgrid"><div class="box" id="formWrap"></div><div class="box">' +
+      "<h3>This newsroom</h3>" +
+      '<div class="astat"><div><b>' + pub.length + "</b><span>Published</span></div>" +
+      "<div><b>" + drf.length + "</b><span>Drafts</span></div>" +
+      "<div><b>" + members.users.length + "</b><span>Members</span></div></div>" +
+      '<p style="font-size:12.5px;color:#767f8b;line-height:1.7">Stories are stored in this browser. ' +
+      "Download a backup before switching computers.</p>" +
+      '<div style="display:flex;gap:8px;margin-top:12px"><button class="btn sm" id="expBtn">Backup</button>' +
+      '<button class="btn sm" id="impBtn">Restore</button><input type="file" id="impFile" accept="application/json" hidden></div>' +
+      "</div></div>";
+  } else if (studioTab === "posts") {
+    h += '<div class="box"><h3>All stories</h3><div class="alist">';
+    var all = db.articles.slice().sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+    if (!all.length) h += '<div class="empty">Nothing yet.</div>';
+    all.forEach(function (a) {
+      h += '<div class="aitem"><h4>' + esc(a.title) + '</h4><div class="r">' +
+        '<span class="st ' + (a.status === "published" ? "pub" : "drf") + '">' + a.status + "</span>" +
+        '<span style="font-size:11px;color:#767f8b">' + esc(sec(a.section).name) + " · " +
+        (a.type === "video" ? "video" : "article") + " · " + (a.views || 0) + " views</span>" +
+        '<a class="btn sm" href="#/story/' + a.id + '">View</a>' +
+        '<button class="btn sm" data-edit="' + a.id + '">Edit</button>' +
+        '<button class="btn sm danger" data-del="' + a.id + '">Delete</button></div></div>';
+    });
+    h += "</div></div>";
+  } else if (studioTab === "members") {
+    h += '<div class="box"><h3>Members (' + members.users.length + ")</h3><div class=\"alist\">";
+    if (!members.users.length) h += '<div class="empty">No members yet.</div>';
+    members.users.forEach(function (u) {
+      h += '<div class="aitem"><h4>' + esc(u.name) + "</h4><div class=\"r\">" +
+        '<span style="font-size:11.5px;color:#767f8b">' + esc(u.email) + " · joined " + dateStr(u.joined) +
+        (u.country ? " · " + esc(u.country) : "") + "</span>" +
+        '<button class="btn sm danger" data-deluser="' + u.id + '">Remove</button></div></div>';
+    });
+    h += "</div></div>";
+  } else {
+    h += '<div class="box"><h3>Site settings</h3>' +
+      '<div class="field"><label for="sBreak">Breaking ticker (separate with ·)</label>' +
+      '<textarea id="sBreak" style="min-height:90px">' + esc(db.settings.breaking || "") + "</textarea></div>" +
+      '<div class="field"><label for="sPass">Studio passcode</label>' +
+      '<input type="text" id="sPass" value="' + esc(db.settings.passcode) + '"></div>' +
+      '<button class="btn primary" id="sSave">Save settings</button>' +
+      '<hr style="border:0;border-top:1px solid #e3e0d9;margin:20px 0">' +
+      '<h3 style="font-size:14px">Danger zone</h3>' +
+      '<p style="font-size:12.5px;color:#767f8b;margin-bottom:10px">Reset all stories back to the sample set.</p>' +
+      '<button class="btn danger" id="resetBtn">Reset site data</button></div>';
+  }
+
+  app.innerHTML = h;
+  markNav(null);
+
+  document.getElementById("lockBtn").addEventListener("click", function () { studioUnlocked = false; renderStudio(); });
+  document.getElementById("newBtn").addEventListener("click", function () {
+    editingId = null; studioTab = "write"; renderStudio();
+  });
+  app.querySelectorAll("[data-tab]").forEach(function (b) {
+    b.addEventListener("click", function () { studioTab = b.getAttribute("data-tab"); renderStudio(); });
+  });
+
+  if (studioTab === "write") {
+    paintForm();
+    document.getElementById("expBtn").addEventListener("click", exportBackup);
+    document.getElementById("impBtn").addEventListener("click", function () { document.getElementById("impFile").click(); });
+    document.getElementById("impFile").addEventListener("change", importBackup);
+  }
+  if (studioTab === "posts") {
+    app.querySelectorAll("[data-edit]").forEach(function (b) {
+      b.addEventListener("click", function () { editingId = b.getAttribute("data-edit"); studioTab = "write"; renderStudio(); });
+    });
+    app.querySelectorAll("[data-del]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-del"), a = getArticle(id);
+        if (!a || !confirm("Delete “" + a.title + "”? This cannot be undone.")) return;
+        db.articles = db.articles.filter(function (x) { return x.id !== id; });
+        db.comments = db.comments.filter(function (c) { return c.articleId !== id; });
+        saveSite(); renderStudio(); toast("Story deleted");
+      });
+    });
+  }
+  if (studioTab === "members") {
+    app.querySelectorAll("[data-deluser]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-deluser");
+        members.users = members.users.filter(function (u) { return u.id !== id; });
+        saveMembers(); renderStudio(); toast("Member removed");
+      });
+    });
+  }
+  if (studioTab === "settings") {
+    document.getElementById("sSave").addEventListener("click", function () {
+      db.settings.breaking = document.getElementById("sBreak").value;
+      var p = document.getElementById("sPass").value.trim();
+      if (p) db.settings.passcode = p;
+      saveSite(); tickTicker(); toast("Settings saved");
+    });
+    document.getElementById("resetBtn").addEventListener("click", function () {
+      if (!confirm("Reset all stories to the sample set?")) return;
+      db.articles = seedArticles(); db.comments = []; saveSite(); renderStudio(); tickTicker(); toast("Site reset");
+    });
+  }
+}
+
+function paintForm() {
+  var a = editingId ? getArticle(editingId) : null;
+  var isEdit = !!a;
+  var v = a || { title: "", dek: "", section: "world", type: "article", body: "", image: "", videoUrl: "", tags: [], featured: false };
+
+  var h = "<h3>" + (isEdit ? "Edit story" : "New story") + "</h3>";
+  h += '<div class="field"><label for="fTitle">Headline</label>' +
+    '<input type="text" id="fTitle" value="' + esc(v.title) + '" placeholder="Write the headline"></div>';
+  h += '<div class="field"><label for="fDek">Standfirst / summary</label>' +
+    '<input type="text" id="fDek" value="' + esc(v.dek) + '" placeholder="One line that tells the story"></div>';
+  h += '<div class="two"><div class="field"><label for="fSec">Section</label><select id="fSec">' +
+    SECTIONS.map(function (s) {
+      return '<option value="' + s.key + '"' + (v.section === s.key ? " selected" : "") + ">" + s.name + "</option>";
+    }).join("") + "</select></div>";
+  h += '<div class="field"><label for="fType">Type</label><select id="fType">' +
+    '<option value="article"' + (v.type === "article" ? " selected" : "") + ">Article</option>" +
+    '<option value="video"' + (v.type === "video" ? " selected" : "") + ">Video</option></select></div></div>";
+  h += '<div class="field"><label for="fImg">Image URL (optional)</label>' +
+    '<input type="url" id="fImg" value="' + esc(v.image) + '" placeholder="https://… (blank = generated artwork)"></div>';
+  h += '<div class="field"><label for="fVid">Video URL (YouTube / Vimeo / .mp4)</label>' +
+    '<input type="url" id="fVid" value="' + esc(v.videoUrl) + '" placeholder="https://youtube.com/watch?v=…"></div>';
+  h += '<div class="field"><label for="fBody">Body</label>' +
+    '<textarea id="fBody" placeholder="Write the story…&#10;&#10;Blank line = new paragraph.&#10;&gt; starts a pull quote.&#10;## starts a subheading.">' + esc(v.body) + "</textarea></div>";
+  h += '<div class="field"><label for="fTags">Tags (comma separated)</label>' +
+    '<input type="text" id="fTags" value="' + esc((v.tags || []).join(", ")) + '" placeholder="markets, arctic, policy"></div>';
+  h += '<div class="field"><label for="fAuthor">Byline</label>' +
+    '<input type="text" id="fAuthor" value="' + esc(v.author || "BWW Newsroom") + '"></div>';
+  h += '<div class="field"><label class="check"><input type="checkbox" id="fFeat"' +
+    (v.featured ? " checked" : "") + "> Lead story on the homepage</label></div>";
+  h += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">' +
+    '<button class="btn primary" id="pubBtn">' + (isEdit && a.status === "published" ? "Update & publish" : "Publish now") + "</button>" +
+    '<button class="btn" id="drfBtn">Save draft</button>' +
+    '<button class="btn ghost" id="prevBtn">Preview</button>' +
+    (isEdit ? '<button class="btn ghost" id="cancelBtn">Cancel</button>' : "") + "</div>";
+
+  document.getElementById("formWrap").innerHTML = h;
+
+  function collect() {
+    return {
+      title: document.getElementById("fTitle").value.trim(),
+      dek: document.getElementById("fDek").value.trim(),
+      section: document.getElementById("fSec").value,
+      type: document.getElementById("fType").value,
+      image: document.getElementById("fImg").value.trim(),
+      videoUrl: document.getElementById("fVid").value.trim(),
+      body: document.getElementById("fBody").value.trim(),
+      tags: document.getElementById("fTags").value.split(",").map(function (t) { return t.trim(); }).filter(Boolean),
+      author: document.getElementById("fAuthor").value.trim() || "BWW Newsroom",
+      featured: document.getElementById("fFeat").checked
+    };
+  }
+  function upsert(data, status) {
+    if (!data.title) { toast("Add a headline first"); return null; }
+    if (!data.body) { toast("Write the story body"); return null; }
+    if (isEdit) {
+      var o = getArticle(editingId);
+      Object.keys(data).forEach(function (k) { o[k] = data[k]; });
+      o.status = status; o.updatedAt = Date.now();
+      if (status === "published" && !o.publishedAt) o.publishedAt = Date.now();
+      if (status === "draft") o.publishedAt = null;
+      saveSite(); return o;
+    }
+    var art = {
+      id: uid("a"), title: data.title, dek: data.dek, section: data.section, type: data.type,
+      body: data.body, image: data.image, videoUrl: data.videoUrl, tags: data.tags,
+      author: data.author, featured: data.featured, status: status,
+      createdAt: Date.now(), updatedAt: Date.now(),
+      publishedAt: status === "published" ? Date.now() : null, views: 0
+    };
+    db.articles.push(art); saveSite(); return art;
+  }
+
+  document.getElementById("pubBtn").addEventListener("click", function () {
+    var art = upsert(collect(), "published");
+    if (!art) return;
+    toast("Published — live on the site now");
+    location.hash = "#/story/" + art.id;
+  });
+  document.getElementById("drfBtn").addEventListener("click", function () {
+    var art = upsert(collect(), "draft");
+    if (!art) return;
+    editingId = art.id; toast("Draft saved"); renderStudio();
+  });
+  document.getElementById("prevBtn").addEventListener("click", function () {
+    var art = upsert(collect(), isEdit ? getArticle(editingId).status : "draft");
+    if (!art) return;
+    editingId = art.id;
+    location.hash = "#/story/" + art.id;
+  });
+  if (isEdit) document.getElementById("cancelBtn").addEventListener("click", function () { editingId = null; paintForm(); });
+}
+
+function exportBackup() {
+  var blob = new Blob([JSON.stringify({ site: db, members: members }, null, 2)], { type: "application/json" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "bharat-world-watch-backup.json";
+  a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+  toast("Backup downloading");
+}
+function importBackup(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  var r = new FileReader();
+  r.onload = function () {
+    try {
+      var d = JSON.parse(r.result);
+      if (d.site && d.site.articles) { db = d.site; saveSite(); }
+      if (d.members && d.members.users) { members = d.members; saveMembers(); }
+      tickTicker(); renderStudio(); toast("Backup restored");
+    } catch (err) { toast("That file is not a valid backup"); }
+  };
+  r.readAsText(f);
+}
+
+/* =========================================================
+   Router
+   ========================================================= */
+function route() {
+  var parts = location.hash.replace(/^#/, "").split("/").filter(Boolean);
+  window.scrollTo(0, 0);
+  if (!parts.length) return renderHome();
+  if (parts[0] === "story" && parts[1]) return renderStory(parts[1]);
+  if (parts[0] === "section" && parts[1]) return renderSection(parts[1]);
+  if (parts[0] === "search") return renderSearch(decodeURIComponent(parts[1] || ""));
+  if (parts[0] === "watch") return renderWatch();
+  if (parts[0] === "member") return renderMember();
+  if (parts[0] === "studio") return renderStudio();
+  if (parts[0] === "join") { renderHome(); openAuth("join"); return; }
+  renderHome();
+}
+window.addEventListener("hashchange", route);
+
+/* =========================================================
+   Toast
+   ========================================================= */
+var toastEl = document.getElementById("toast"), tTimer = null;
+function toast(m) {
+  toastEl.textContent = m;
+  toastEl.classList.add("show");
+  clearTimeout(tTimer);
+  tTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 2600);
+}
+
+/* =========================================================
+   Boot
+   ========================================================= */
+loadAll();
+buildChrome();
+route();
+})();
+</script>
+</body>
+</html>
