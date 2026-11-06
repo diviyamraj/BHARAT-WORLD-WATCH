@@ -50,6 +50,7 @@
   .mast .wrap{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:18px 0 16px}
   .brand{display:flex;align-items:center;gap:14px;min-width:0}
   .globe{width:52px;height:52px;flex:none}
+  .logoimg{object-fit:contain;border-radius:8px;background:transparent}
   .wordmark{font-family:var(--serif);font-size:clamp(22px,3vw,31px);font-weight:700;letter-spacing:-.01em;
     line-height:1.05;white-space:nowrap}
   .wordmark span{color:var(--brand)}
@@ -349,7 +350,9 @@
 
 <header class="mast"><div class="wrap">
   <a class="brand" href="#/">
-    <svg class="globe" viewBox="0 0 64 64" aria-hidden="true">
+    <img class="globe logoimg" id="brandLogo" src="logo.png" alt="Bharat World Watch"
+         onerror="this.style.display='none';document.getElementById('brandMark').style.display='block';">
+    <svg class="globe" id="brandMark" viewBox="0 0 64 64" aria-hidden="true" style="display:none">
       <circle cx="32" cy="32" r="30" fill="#0b1f3a"/>
       <circle cx="32" cy="32" r="21" fill="none" stroke="#c9a227" stroke-width="1.6" opacity=".9"/>
       <ellipse cx="32" cy="32" rx="9" ry="21" fill="none" stroke="#c9a227" stroke-width="1.2" opacity=".7"/>
@@ -489,6 +492,20 @@ function ytId(u) {
   var m = String(u).match(/(?:youtube\.com\/watch\?[^#]*\bv=|\/embed\/|youtu\.be\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
   return m ? m[1] : null;
 }
+function videoEmbed(url) {
+  if (!url) return null;
+  var y = ytId(url);
+  if (y) return { src: "https://www.youtube.com/embed/" + y + "?rel=0" };
+  var v = vimeoId(url);
+  if (v) return { src: "https://player.vimeo.com/video/" + v };
+  if (/facebook\.com|fb\.watch/i.test(url))
+    return { src: "https://www.facebook.com/plugins/video.php?href=" + encodeURIComponent(url) +
+             "&show_text=false&width=734" };
+  var ig = String(url).match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/);
+  if (ig) return { src: "https://www.instagram.com/p/" + ig[1] + "/embed" };
+  if (/\.(mp4|webm|ogg)(\?|$)/i.test(url)) return { file: url };
+  return null;
+}
 function vimeoId(u) {
   if (!u) return null;
   var m = String(u).match(/vimeo\.com\/(?:video\/)?(\d{6,})/);
@@ -601,7 +618,10 @@ function loadAll() {
     if (!db.comments) db.comments = [];
     if (!db.settings) db.settings = {};
     if (db.settings.passcode) {
-      db.settings.passHash = hashPass(db.settings.passcode);
+      /* an old build saved the passcode in plain text — upgrade it */
+      db.settings.passHash = (db.settings.passcode === "BWW-2026")
+        ? DEFAULT_HASH
+        : hashPass(db.settings.passcode);
       delete db.settings.passcode;
       saveSite();
     }
@@ -641,6 +661,16 @@ function buildChrome() {
 
   document.getElementById("year").textContent = new Date().getFullYear();
   tickTicker(); clock(); setInterval(clock, 30000); paintAuth();
+}
+
+function applyLogo() {
+  var img = document.getElementById("brandLogo");
+  var svg = document.getElementById("brandMark");
+  if (!img || !svg) return;
+  var src = (db.settings && db.settings.logoUrl) ? db.settings.logoUrl : "logo.png";
+  img.style.display = "block";
+  svg.style.display = "none";
+  img.src = src;
 }
 
 function refreshNav() {
@@ -705,7 +735,7 @@ function markNav(key) {
 function thumb(a, cls) {
   var s = sec(a.section);
   var inner;
-  if (a.image && /^https?:\/\//i.test(a.image)) {
+  if (a.image && /^(https?:\/\/|data:image\/)/i.test(a.image)) {
     inner = '<img src="' + esc(a.image) + '" alt="' + esc(a.title) + '" loading="lazy" ' +
       'onerror="this.style.display=\'none\';this.parentNode.innerHTML=\'<div class=&quot;ph&quot; style=&quot;' +
       esc(artStyle(a)) + '&quot;><b>' + esc(s.name) + '</b></div>\'">';
@@ -882,13 +912,11 @@ function renderStory(id) {
     '<span style="margin-left:auto">' + (a.views || 0) + " views</span></div>";
 
   if (a.type === "video") {
-    var yid = ytId(a.videoUrl), vid = vimeoId(a.videoUrl);
+    var ve = videoEmbed(a.videoUrl);
     h += '<div class="videoframe">';
-    if (yid) h += '<iframe src="https://www.youtube.com/embed/' + yid + '?rel=0" allowfullscreen title="' + esc(a.title) + '"></iframe>';
-    else if (vid) h += '<iframe src="https://player.vimeo.com/video/' + vid + '" allowfullscreen title="' + esc(a.title) + '"></iframe>';
-    else if (a.videoUrl && /\.(mp4|webm|ogg)(\?|$)/i.test(a.videoUrl))
-      h += '<video controls playsinline src="' + esc(a.videoUrl) + '" style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>';
-    else h += '<div class="noplay">No video attached to this post yet.<br>Add a YouTube, Vimeo or .mp4 link in the Studio.</div>';
+    if (ve && ve.src) h += '<iframe src="' + esc(ve.src) + '" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture" title="' + esc(a.title) + '"></iframe>';
+    else if (ve && ve.file) h += '<video controls playsinline src="' + esc(ve.file) + '" style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>';
+    else h += '<div class="noplay">No video attached to this post yet.<br>Paste a YouTube, Facebook, Instagram, Vimeo or .mp4 link in the Studio.</div>';
     h += "</div>";
   } else {
     h += '<div class="lead-img">' + thumb(a) + "</div>";
@@ -1042,12 +1070,20 @@ function openAuth(mode) {
     if (isJoin) {
       var name = document.getElementById("mName").value.trim();
       if (!name) { toast("Enter your name"); return; }
+      var pending = null;
+      members.users.forEach(function (u) { if (u.email === email && u.status === "invited") pending = u; });
+      if (pending) {
+        pending.name = name; pending.pass = pass; pending.status = "active"; pending.joined = Date.now();
+        pending.country = document.getElementById("mCountry").value.trim();
+        saveMembers(); setSession(pending.id); closeModal(); paintAuth();
+        toast("Welcome, " + name.split(" ")[0] + "!"); route(); return;
+      }
       var exists = members.users.some(function (u) { return u.email === email; });
       if (exists) { toast("That email is already registered"); return; }
       var user = {
         id: uid("u"), name: name, email: email, pass: pass,
         country: document.getElementById("mCountry").value.trim(),
-        joined: Date.now(), saved: []
+        role: "reader", status: "active", joined: Date.now(), saved: []
       };
       members.users.push(user); saveMembers(); setSession(user.id);
       closeModal(); paintAuth(); toast("Welcome, " + name.split(" ")[0] + "!"); route();
@@ -1148,12 +1184,27 @@ function renderStudio() {
     });
     h += "</div></div>";
   } else if (studioTab === "members") {
-    h += '<div class="box"><h3>Members (' + members.users.length + ")</h3><div class=\"alist\">";
+    h += '<div class="box"><h3>Add a member by email</h3>' +
+      '<p style="font-size:12.5px;color:#767f8b;margin-bottom:12px;line-height:1.7">Add someone as a reader, or as a studio helper who can write and publish.</p>' +
+      '<div class="two"><div class="field"><label for="invName">Name</label>' +
+      '<input type="text" id="invName" placeholder="Full name"></div>' +
+      '<div class="field"><label for="invEmail">Email</label>' +
+      '<input type="email" id="invEmail" placeholder="name@example.com"></div></div>' +
+      '<div class="two"><div class="field"><label for="invRole">Role</label>' +
+      '<select id="invRole"><option value="reader">Reader — comment &amp; save</option>' +
+      '<option value="helper">Studio helper — can write</option></select></div>' +
+      '<div class="field" style="display:flex;align-items:flex-end">' +
+      '<button class="btn primary" id="invAdd" style="width:100%">Add &amp; invite</button></div></div>' +
+      '<div id="invOut"></div></div>';
+
+    h += '<div class="box" style="margin-top:18px"><h3>Members (' + members.users.length + ')</h3><div class="alist">';
     if (!members.users.length) h += '<div class="empty">No members yet.</div>';
     members.users.forEach(function (u) {
-      h += '<div class="aitem"><h4>' + esc(u.name) + "</h4><div class=\"r\">" +
-        '<span style="font-size:11.5px;color:#767f8b">' + esc(u.email) + " · joined " + dateStr(u.joined) +
-        (u.country ? " · " + esc(u.country) : "") + "</span>" +
+      var role = u.role === "helper" ? "Studio helper" : "Reader";
+      var st = u.status === "invited" ? "invited" : "active";
+      h += '<div class="aitem"><h4>' + esc(u.name) + ' <span class="st ' + (st === "active" ? "pub" : "drf") + '" style="vertical-align:middle">' + st + '</span></h4><div class="r">' +
+        '<span style="font-size:11.5px;color:#767f8b">' + esc(u.email) + " · " + role + " · " + dateStr(u.joined) + "</span>" +
+        '<button class="btn sm" data-invite="' + u.id + '">Invite again</button>' +
         '<button class="btn sm danger" data-deluser="' + u.id + '">Remove</button></div></div>';
     });
     h += "</div></div>";
@@ -1163,7 +1214,19 @@ function renderStudio() {
       '<textarea id="sBreak" style="min-height:90px">' + esc(db.settings.breaking || "") + "</textarea></div>" +
       '<div class="field"><label for="sPass">New studio passcode (leave blank to keep current)</label>' +
       '<input type="password" id="sPass" value="" autocomplete="new-password" placeholder="••••••••"></div>' +
+      '<hr style="border:0;border-top:1px solid #e3e0d9;margin:18px 0">' +
+      '<h3 style="font-size:14px">Logo</h3>' +
+      '<div class="field"><label for="sLogo">Logo preview (this browser only)</label>' +
+      '<input type="url" id="sLogo" value="' + esc(db.settings.logoUrl || "") + '" placeholder="https://… image link">' +
+      '<div class="hint">Paste an image link and press Preview to see it in the header. This preview is only on your browser — ' +
+      'for the logo everyone sees, upload a file named <b>logo.png</b> to the repository.</div></div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+      '<button class="btn sm" id="logoApply">Preview</button>' +
+      '<button class="btn sm danger" id="logoClear">Remove preview</button></div>' +
       '<button class="btn primary" id="sSave">Save settings</button>' +
+      '<p style="font-size:12px;color:#767f8b;line-height:1.7;margin-top:14px">' +
+      'Logo badalna hai? Repository me <b>logo.png</b> naam se apni image upload kar dijiye (square, 256×256) — ' +
+      'header me apne aap wahi dikhne lagega. File na ho to built-in globe chalta rahega.</p>' +
       '<hr style="border:0;border-top:1px solid #e3e0d9;margin:20px 0">' +
       '<h3 style="font-size:14px">Danger zone</h3>' +
       '<p style="font-size:12.5px;color:#767f8b;margin-bottom:10px">Reset all stories back to the sample set.</p>' +
@@ -1205,9 +1268,33 @@ function renderStudio() {
     app.querySelectorAll("[data-deluser]").forEach(function (b) {
       b.addEventListener("click", function () {
         var id = b.getAttribute("data-deluser");
+        var u = members.users.filter(function (x) { return x.id === id; })[0];
+        if (u && !confirm("Remove " + u.name + " (" + u.email + ")?")) return;
         members.users = members.users.filter(function (u) { return u.id !== id; });
         saveMembers(); renderStudio(); toast("Member removed");
       });
+    });
+    app.querySelectorAll("[data-invite]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var u = members.users.filter(function (x) { return x.id === b.getAttribute("data-invite"); })[0];
+        if (u) showInvite(u);
+      });
+    });
+    document.getElementById("invAdd").addEventListener("click", function () {
+      var name = document.getElementById("invName").value.trim();
+      var email = document.getElementById("invEmail").value.trim().toLowerCase();
+      var role = document.getElementById("invRole").value;
+      if (!name) { toast("Enter a name"); return; }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { toast("Enter a valid email"); return; }
+      var dup = members.users.filter(function (u) { return u.email === email; })[0];
+      if (dup) { toast("That email is already on the list"); showInvite(dup); return; }
+      var u = { id: uid("u"), name: name, email: email, role: role, status: "invited",
+                joined: Date.now(), saved: [] };
+      members.users.push(u);
+      saveMembers();
+      renderStudio();
+      setTimeout(function () { showInvite(u); }, 30);
+      toast("Added — now send the invite");
     });
   }
   if (studioTab === "settings") {
@@ -1223,6 +1310,16 @@ function renderStudio() {
         toast("Settings saved");
       }
       saveSite(); tickTicker();
+    });
+    document.getElementById("logoApply").addEventListener("click", function () {
+      var u = document.getElementById("sLogo").value.trim();
+      db.settings.logoUrl = u; saveSite(); applyLogo();
+      toast(u ? "Logo preview applied (this browser)" : "Preview cleared");
+    });
+    document.getElementById("logoClear").addEventListener("click", function () {
+      db.settings.logoUrl = ""; saveSite(); applyLogo();
+      document.getElementById("sLogo").value = "";
+      toast("Preview removed — back to logo.png / globe");
     });
     document.getElementById("resetBtn").addEventListener("click", function () {
       if (!confirm("Reset all stories to the sample set?")) return;
@@ -1248,10 +1345,20 @@ function paintForm() {
   h += '<div class="field"><label for="fType">Type</label><select id="fType">' +
     '<option value="article"' + (v.type === "article" ? " selected" : "") + ">Article</option>" +
     '<option value="video"' + (v.type === "video" ? " selected" : "") + ">Video</option></select></div></div>";
+  var isData = /^data:image\//i.test(v.image || "");
+  var imgUrlVal = isData ? "" : (v.image || "");
+  var photoData = isData ? v.image : "";
   h += '<div class="field"><label for="fImg">Image URL (optional)</label>' +
-    '<input type="url" id="fImg" value="' + esc(v.image) + '" placeholder="https://… (blank = generated artwork)"></div>';
-  h += '<div class="field"><label for="fVid">Video URL (YouTube / Vimeo / .mp4)</label>' +
-    '<input type="url" id="fVid" value="' + esc(v.videoUrl) + '" placeholder="https://youtube.com/watch?v=…"></div>';
+    '<input type="url" id="fImg" value="' + esc(imgUrlVal) + '" placeholder="https://… (blank = generated artwork)"></div>';
+  h += '<div class="field"><label>Or upload a photo (optional)</label>' +
+    '<input type="file" id="fPhoto" accept="image/*" style="width:100%;border:1px dashed #e3e0d9;border-radius:3px;padding:9px;background:#fbfaf7;font-size:12.5px">' +
+    '<input type="hidden" id="fPhotoData" value="' + esc(photoData) + '">' +
+    '<div id="photoPrev" style="margin-top:9px;display:' + (photoData ? "block" : "none") + '">' +
+    '<img id="photoPrevImg" src="' + esc(photoData) + '" alt="" style="max-width:190px;border-radius:3px;border:1px solid #e3e0d9">' +
+    '<div><button type="button" class="btn sm danger" id="photoClear" style="margin-top:6px">Remove photo</button></div></div>' +
+    '<div class="hint">Photo is resized and stored with the story. A URL is lighter — use it when the picture already lives online.</div></div>';
+  h += '<div class="field"><label for="fVid">Video URL (YouTube, Facebook, Instagram, Vimeo or .mp4)</label>' +
+    '<input type="url" id="fVid" value="' + esc(v.videoUrl) + '" placeholder="https://youtube.com/watch?v=…  ·  https://facebook.com/…/videos/…"></div>';
   h += '<div class="field"><label for="fBody">Body</label>' +
     '<textarea id="fBody" placeholder="Write the story…&#10;&#10;Blank line = new paragraph.&#10;&gt; starts a pull quote.&#10;## starts a subheading.">' + esc(v.body) + "</textarea></div>";
   h += '<div class="field"><label for="fTags">Tags (comma separated)</label>' +
@@ -1268,13 +1375,30 @@ function paintForm() {
 
   document.getElementById("formWrap").innerHTML = h;
 
+  document.getElementById("fPhoto").addEventListener("change", function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f) return;
+    if (!/^image\//.test(f.type)) { toast("Choose an image file"); return; }
+    readImageFile(f, function (dataUrl) {
+      document.getElementById("fPhotoData").value = dataUrl;
+      document.getElementById("photoPrevImg").src = dataUrl;
+      document.getElementById("photoPrev").style.display = "block";
+      toast("Photo added");
+    });
+  });
+  document.getElementById("photoClear").addEventListener("click", function () {
+    document.getElementById("fPhotoData").value = "";
+    document.getElementById("photoPrev").style.display = "none";
+    document.getElementById("fPhoto").value = "";
+  });
+
   function collect() {
     return {
       title: document.getElementById("fTitle").value.trim(),
       dek: document.getElementById("fDek").value.trim(),
       section: document.getElementById("fSec").value,
       type: document.getElementById("fType").value,
-      image: document.getElementById("fImg").value.trim(),
+      image: document.getElementById("fPhotoData").value || document.getElementById("fImg").value.trim(),
       videoUrl: document.getElementById("fVid").value.trim(),
       body: document.getElementById("fBody").value.trim(),
       tags: document.getElementById("fTags").value.split(",").map(function (t) { return t.trim(); }).filter(Boolean),
@@ -1321,6 +1445,66 @@ function paintForm() {
     location.hash = "#/story/" + art.id;
   });
   if (isEdit) document.getElementById("cancelBtn").addEventListener("click", function () { editingId = null; paintForm(); });
+}
+
+function inviteMessage(u) {
+  var url = location.href.split("#")[0];
+  var role = u.role === "helper" ? "Studio helper" : "Reader";
+  return "Hello " + u.name + ",\n\n" +
+    "You have been added to Bharat World Watch as a " + role + ".\n\n" +
+    "Open the site: " + url + "\n" +
+    "Click \"Join free\" and create your account with this email (" + u.email + ").\n" +
+    (u.role === "helper"
+      ? "As a studio helper you can write and publish stories from the Studio.\n"
+      : "") +
+    "\n— Bharat World Watch";
+}
+
+function showInvite(u) {
+  var out = document.getElementById("invOut");
+  if (!out) return;
+  var msg = inviteMessage(u);
+  out.innerHTML = '<div style="border:1px solid #e3e0d9;border-radius:4px;padding:12px;background:#fbfaf7">' +
+    '<p style="font-size:12px;color:#767f8b;margin-bottom:8px">Send this to <b>' + esc(u.email) + "</b>:</p>" +
+    '<textarea id="invMsg" style="width:100%;min-height:110px;border:1px solid #e3e0d9;border-radius:3px;padding:9px;font-size:12.5px;background:#fff">' +
+    esc(msg) + "</textarea>" +
+    '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">' +
+    '<a class="btn sm primary" style="text-decoration:none" href="mailto:' + esc(u.email) +
+    "?subject=" + encodeURIComponent("You are invited to Bharat World Watch") +
+    "&body=" + encodeURIComponent(msg) + '">Email it</a>' +
+    '<button class="btn sm" id="invCopy">Copy message</button>' +
+    '<a class="btn sm" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/?text=' +
+    encodeURIComponent(msg) + '">WhatsApp</a>' +
+    "</div></div>";
+  document.getElementById("invCopy").addEventListener("click", function () {
+    var t = document.getElementById("invMsg");
+    t.select();
+    if (navigator.clipboard) navigator.clipboard.writeText(t.value);
+    else document.execCommand("copy");
+    toast("Message copied");
+  });
+}
+
+function readImageFile(file, cb) {
+  var r = new FileReader();
+  r.onload = function (e) {
+    var img = new Image();
+    img.onload = function () {
+      var max = 1200, w = img.width, h = img.height;
+      if (w > max || h > max) {
+        var k = Math.min(max / w, max / h);
+        w = Math.round(w * k); h = Math.round(h * k);
+      }
+      var c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      c.getContext("2d").drawImage(img, 0, 0, w, h);
+      try { cb(c.toDataURL("image/jpeg", 0.82)); }
+      catch (err) { toast("That image could not be read"); }
+    };
+    img.onerror = function () { toast("That image could not be read"); };
+    img.src = e.target.result;
+  };
+  r.readAsDataURL(file);
 }
 
 function exportBackup() {
@@ -1381,6 +1565,7 @@ function toast(m) {
    ========================================================= */
 loadAll();
 buildChrome();
+applyLogo();
 route();
 })();
 </script>
